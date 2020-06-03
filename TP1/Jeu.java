@@ -3,23 +3,26 @@ import java.util.*;
 public class Jeu implements Comparable<Jeu> //a completer
 {
     private String fabricant;
-    private String jeu;
+    private String titre;
     private String cote;
-    private List<String> console;
+    private LinkedHashSet<String> consoles;
 
-    public Jeu(String fabricant, String jeu, String cote) 
+    public Jeu(String fabricant, String titre, String cote) 
     {
         this.fabricant = fabricant;
-        this.jeu = jeu;
+        this.titre = titre;
         this.cote = cote;
-        console = new ArrayList <String>();
+        consoles = new LinkedHashSet<String>();
     }
-    public Jeu(String fabricant, String jeu, String cote, List<String> console) 
+
+
+
+    public Jeu(String fabricant, String titre, String cote, LinkedHashSet<String> consoles) 
     {
         this.fabricant = fabricant;
-        this.jeu = jeu;
+        this.titre = titre;
         this.cote = cote;
-        this.console = console;
+        this.consoles = consoles;
     }
 
     public boolean equals(Object o){
@@ -27,7 +30,7 @@ public class Jeu implements Comparable<Jeu> //a completer
 
         if(o instanceof Jeu){
             autre = (Jeu)o;
-            return fabricant.equals(autre.fabricant)&& jeu.equals(autre.jeu);
+            return titre.equals(autre.titre)&& fabricant.equals(autre.fabricant);
         } else {
             return false;
         }
@@ -35,31 +38,48 @@ public class Jeu implements Comparable<Jeu> //a completer
 
     // tri selon fabricant, puis selon le nom du jeu
     public int compareTo(Jeu autre){
-        int res = fabricant.compareTo(autre.fabricant);
+        int res = titre.compareTo(autre.titre);
         //si meme nom de fabricant
         if(res==0)
-            res = jeu.compareTo(autre.jeu);
+            res = fabricant.compareTo(autre.fabricant);
         return res;
 	}
 
     public int hashCode(){
-		return fabricant.hashCode() + jeu.hashCode();
+		return fabricant.hashCode() + titre.hashCode();
 	}
 		
 
-	public String toString()
-	{
-		return String.format("%-15d %-34s %-25s %-12d %-13d", fabricant, jeu, cote,console);
-	}
+    public String toString(){
+        String res = fabricant + ";" + titre + ";" + cote + ";"; 
+
+
+ 
+        if(consoles.size() != 0) {
+            for(String s : consoles)
+            {
+             //   System.out.printf("res %s\n", res);
+               // System.out.printf("s %s\n", s);
+               // System.out.printf("consoles %s\n", consoles);
+                res += s + ",";
+            }
+
+        }
+
+
+        String resultat = res.substring(0,res.length()-1);
+        
+        return resultat;
+    }
 
     public String getFabricant()
     {
         return fabricant;
     }
     
-    public String getJeu()
+    public String getTitre()
     {
-        return jeu;
+        return titre;
     }
 
     public String getCote()
@@ -67,8 +87,10 @@ public class Jeu implements Comparable<Jeu> //a completer
         return cote;
     }
 
+/*
     public String getConsole(int index)
     {
-        return console.get(index);
+        return consoles.get(index);
     }
+    */
 }
