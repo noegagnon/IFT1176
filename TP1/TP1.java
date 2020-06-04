@@ -18,7 +18,28 @@ public class TP1 {
 
     public static void main(String[] args) 	throws IOException 
  	{
-		Map<String, Collection<Jeu>> jeuxVideo = new LinkedHashMap<String, Collection<Jeu>>();
+		LinkedHashSet<String> linkedset =  
+                           new LinkedHashSet<String>();   
+  
+        // Adding element to LinkedHashSet   
+        linkedset.add("Nintendo");   
+        linkedset.add("Xbox");   
+
+		Jeu jeu1 = new Jeu("Ubisoft", "Sims", "T", linkedset);
+		//System.out.println(jeu1);
+
+    	TestInterface laBase = new Bdd();
+    	Jeu unJeu = new Jeu("EA", "The Sims 5", "M");
+
+    	//laBase.addJeu(unJeu);
+		laBase.addJeu(jeu1);
+		laBase.addJeu(unJeu);
+
+		laBase.getJeu("Sims", "Ubisoft");
+
+		//laBase.getJeu("EA", "The Sims 5");
+
+		 /*
 	
 		FileReader fr = null;
 		boolean existeFichier = true;
@@ -47,22 +68,13 @@ public class TP1 {
 					String jeu = information[1];
 					String cote = information[2];
 					List<String> consoles = Arrays.asList(information[3].split(","));
-					System.out.println(consoles);
-
-					/*
-					List<String> consoles;
-					String elemConsoles[] = information[3].split(",");
-					int index = 0;
-					while(elemConsole[index] != "\n") {
-						consoles.add(elemConsoles[index]);
-						index++;
-					}
-					*/		
+					System.out.println(consoles);		
 				}
 			}
 			
 			entree.close();
 		}
+		*/
 /*
     	TestInterface laBase = new Bdd();
     	Jeu unJeu;
