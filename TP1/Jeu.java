@@ -15,7 +15,11 @@ public class Jeu implements Comparable<Jeu> //a completer
         consoles = new LinkedHashSet<String>();
     }
 
-
+    public Jeu(String fabricant, String titre) {
+        this.fabricant = fabricant;
+        this.titre = titre;
+        consoles = new LinkedHashSet<String>();
+    }
 
     public Jeu(String fabricant, String titre, String cote, LinkedHashSet<String> consoles) 
     {
