@@ -31,18 +31,26 @@ public class Bdd implements TestInterface{
     }
 
 	public Jeu getJeu(String titre, String fabricant){
-		/*
 		Jeu aTrouver = new Jeu(fabricant, titre);
-		System.out.println(aTrouver);
-		if(jeuxVideo.containsKey(aTrouver)) {
-			System.out.println("hey");
-		
+
+		if(ensemble.contains(aTrouver)) {
+			Iterator<Jeu> it = ensemble.iterator();
+		 	//boolean trouve = false;
+
+		 	while(it.hasNext()) {
+		 		Jeu courant = it.next();
+		 		if (aTrouver.equals(courant)) {
+		 			System.out.println("courant " + courant);
+		 			//trouve = true;
+					return courant;
+		 		}
+		 	}
+
+		} else {
+			System.out.println("Le jeu " + aTrouver.getTitre() + " pas trouve");
 		}
-		*/
-		//a completer et changer l'instruction du return
 		return null;
 	}
-
 
 
 	public void addBdd(String nomFile){
