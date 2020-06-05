@@ -8,14 +8,15 @@ public class Bdd implements TestInterface{
 
     public Bdd() {
 		jeuxVideo = new LinkedHashMap<>();
-    }
+	}
 
 
+	//ajouter qu'il faut ajouter les consoles (et la cote) si le jeu est deja present
     public void addJeu(Jeu unJeu){
-		System.out.println(unJeu.getTitre());
+		//System.out.println(unJeu.getTitre());
 		ensemble.add(unJeu);
 		jeuxVideo.put(unJeu.getFabricant(), ensemble);
-		System.out.println(jeuxVideo);
+		//System.out.println(jeuxVideo);
 		//jeuxVideo.add(unJeu.getFabricant, );
 		//if(unJeu.getTitre())
 		/*
@@ -62,13 +63,37 @@ public class Bdd implements TestInterface{
 	}
 
 	public ArrayList<Jeu> chercheConsole(String console){
+		//System.out.println(jeuxVideo.trouveConsole("EA"));
 	// a completer et changer l'instruction du return
-		return null;
+		System.out.println("asd" + jeuxVideo);
+		ArrayList<Jeu> gameWithConsole= new ArrayList();
+		Iterator<Jeu> it = ensemble.iterator();
+		//boolean trouve = false;
+
+		while(it.hasNext()) {
+			Jeu jeuCourant = it.next();
+			if(jeuCourant.trouveConsole(console)) {
+				gameWithConsole.add(jeuCourant);
+				System.out.println("courant " + jeuCourant);
+			}
+
+		}
+		return gameWithConsole;
 	}
 
 	public Collection<Jeu> getJeuxFabricant(String fabricant){
 	// a completer et potentiellement changer l'instruction du return
-		return null;
+		Collection<Jeu> jeuxFab = new ArrayList();
+		Iterator<Jeu> it = ensemble.iterator();
+
+		while(it.hasNext()) {
+			Jeu jeuCourant = it.next();
+			if(jeuCourant.getFabricant().equalsIgnoreCase(fabricant)) {
+				jeuxFab.add(jeuCourant);
+				System.out.println("courant " + jeuCourant);
+			}
+		}	
+		return jeuxFab;
 	}
 
 	public void saveBdd(String nomFichier){
