@@ -96,6 +96,27 @@ public class Bdd implements TestInterface{
 		return jeuxFab;
 	}
 
+
+	public Collection<Jeu> chercheCote(String cote){
+	// a completer et potentiellement changer l'instruction du return
+		Collection<Jeu> jeuxCote = new ArrayList();
+		Iterator<Jeu> it = ensemble.iterator();
+
+		while(it.hasNext()) {
+			Jeu jeuCourant = it.next();
+			String[] toutesCotes = jeuCourant.getCote().split("");
+			for(int i=0; i<toutesCotes.length; i++) {
+				if(toutesCotes[i].equalsIgnoreCase(cote)) {
+					jeuxCote.add(jeuCourant);
+					System.out.println("courant " + jeuxCote);
+				}
+			}
+			//System.out.println(toutesCotes);
+
+		}	
+		return jeuxCote;
+	}
+
 	public void saveBdd(String nomFichier){
 	//A completer
 	/*
