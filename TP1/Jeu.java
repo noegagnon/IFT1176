@@ -70,7 +70,6 @@ public class Jeu implements Comparable<Jeu> //a completer
 
         }
 
-
         String resultat = res.substring(0,res.length()-1);
         
         return resultat;
@@ -90,6 +89,23 @@ public class Jeu implements Comparable<Jeu> //a completer
     {
         return cote;
     }
+
+
+    public Boolean trouveConsole(String uneConsole){
+
+        for(String s : consoles) {
+            if(s == uneConsole) {
+                return true;
+            }
+        }
+        return false;
+    }
+/*
+    public LinkedHashSet getConsoles()
+    {
+        return consoles;
+    }
+*/
 
 /*
     public String getConsole(int index)
