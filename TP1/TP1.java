@@ -2,18 +2,18 @@ import java.util.*;
 import java.io.*;
 
 public class TP1 {
-/*
+
 	// Pour faire afficher un jeu.  a modifier pour le tp2
 	public static void afficherJeu(TestInterface b, String fab, String titre ){
 		Jeu aAfficher = b.getJeu(titre, fab);
 
 		if( aAfficher != null)
-			System.out.println(aAfficher);
+			System.out.println("aAfficher " + aAfficher);
 		else
 			System.out.println(titre + " n'est pas dans la banque de donnees");
 	}
 
-*/
+
 
 
     public static void main(String[] args) 	throws IOException 
@@ -28,19 +28,43 @@ public class TP1 {
 		Jeu jeu1 = new Jeu("Ubisoft", "Sims", "T", linkedset);
 		//System.out.println(jeu1);
 
+		Jeu jeu2 = new Jeu("Ubisoft", "Beat Saber", "A", linkedset);
+
     	TestInterface laBase = new Bdd();
     	Jeu unJeu = new Jeu("EA", "The Sims 5", "M");
 
     	//laBase.addJeu(unJeu);
 		laBase.addJeu(jeu1);
 		laBase.addJeu(unJeu);
+		laBase.addJeu(jeu2);
 
 		laBase.getJeu("Sims", "Ubisoft");
 
 		//laBase.getJeu("EA", "The Sims 5");
 
+		System.out.println("Les infos sur les Sims 5 : ");
+    	afficherJeu(laBase, "EA", "The Sims 5");
+    	afficherJeu(laBase, "Ubisoft", "Sims");
+
+
+		System.out.println("\n\nLes jeux disponibles sur la SWITCH sont :");
+		List<Jeu> lstSwitch = laBase.chercheConsole("Xbox");
+		System.out.println(lstSwitch);
+
+		//List<Jeu> lstSwitch = laBase.chercheConsole("Xbox");
+
+
+		Collection<Jeu> colFab = laBase.getJeuxFabricant("UBISOFT");
+		System.out.println("\n\nLes jeux de UBISOFT");
+		if(colFab==null)
+			System.out.println("Aucun jeu par UBISFOT");
+		else{
+			for(Jeu j : colFab)
+			System.out.println(j);
+		}
 		 /*
-	
+
+
 		FileReader fr = null;
 		boolean existeFichier = true;
 		boolean finFichier = false;
