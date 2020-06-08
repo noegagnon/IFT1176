@@ -3,9 +3,11 @@ import java.io.*;
 
 // arranger ensemble pour etre juste pour 1 jeu
 public class Bdd implements TestInterface{
-	private Map<String, TreeSet<Jeu>> jeuxVideo;
-	private TreeSet<Jeu> ensemble = new TreeSet<Jeu>(); 
-	
+	//private Map<String, TreeSet<Jeu>> jeuxVideo;
+	//private TreeSet<Jeu> ensemble = new TreeSet<Jeu>(); 
+	Map<String, TreeSet<Jeu>> jeuxVideo = new LinkedHashMap<>();
+	//TreeSet<Jeu> ensemble = new TreeSet<Jeu>(); 
+	TreeSet<Jeu> ensemble;
     public Bdd() {
 		jeuxVideo = new LinkedHashMap<>();
 	}
@@ -59,9 +61,8 @@ public class Bdd implements TestInterface{
 	}
 
 	public void loadBdd(String nomFile){
-		Map<String, TreeSet<Jeu>> jeuxVideo = new LinkedHashMap<>();
-		//TreeSet<Jeu> ensemble = new TreeSet<Jeu>(); 
-		TreeSet<Jeu> ensemble;
+		//Map<String, TreeSet<Jeu>> jeuxVideo = new LinkedHashMap<>();
+		//TreeSet<Jeu> ensemble;
 
 		FileReader fr = null;
 		boolean existeFile = true;
@@ -110,8 +111,33 @@ public class Bdd implements TestInterface{
 					// Si le fabricant est dans la base de donnees, on y ajoute le jeu, sinon on cree un ensemble avec 
 					// ce fabricant
 					ensemble = jeuxVideo.get(fabricant);
+					//String test = nouv.getTitre();
+					//System.out.println("nouvGetTitre " +nouv.getTitre());
+
+					//System.out.println("test "+ test);
+					//System.out.println(ensemble.contains(jeuxVideo.getTitre()));
+
+					ArrayList<Jeu> jeuAAjouter = new ArrayList();
+
 					if(ensemble != null) {
-						ensemble.add(nouv);
+						//caller addJeu nouv.addJeu();
+	
+						
+						boolean jeuExiste = false;
+						for(Jeu j : ensemble) {
+
+							if(nouv.equals(j)) {
+								//j.add(consoles);
+								for(int i=0; i<uneConsole.length; i++ ){
+									j.addConsoles(uneConsole[i]);
+									jeuExiste = true;
+									// jeuAAjouter.add(nouv);
+								}	
+							} 
+						} 
+						if(!jeuExiste) {
+							ensemble.add(nouv);
+						} 						
 					} else {
 						ensemble = new TreeSet<Jeu>();
 						ensemble.add(nouv);
