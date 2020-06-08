@@ -13,24 +13,38 @@ public class Bdd implements TestInterface{
 	}
 
 
-	//ajouter qu'il faut ajouter les consoles (et la cote) si le jeu est deja present
+	//ajouter qu'il faut ajouter les consolessi le jeu est deja present
     public void addJeu(Jeu unJeu){
-		//System.out.println(unJeu.getTitre());
-		ensemble.add(unJeu);
-		jeuxVideo.put(unJeu.getFabricant(), ensemble);
-		//System.out.println(jeuxVideo);
-		//jeuxVideo.add(unJeu.getFabricant, );
-		//if(unJeu.getTitre())
-		/*
-		// si la map ne contient pas le jeu a ajouter, on l'ajoute avec la collection de console vide.
-		if(!jeuxVideo.containsValue(unJeu)) {
-			LinkedHashSet<String> consoles = new LinkedHashSet<String>();
-			//jeuxVideo.put(unJeu, consoles);
-			System.out.println(jeuxVideo);
-			//System.out.println("heelo");
+
+		// Si le fabricant est dans la base de donnees, on y ajoute le jeu, sinon on cree un ensemble avec 
+		// ce fabricant
+		String fabricant = unJeu.getFabricant();
+		ensemble = jeuxVideo.get(fabricant);
+		//System.out.println(unJeu.getConsoles());
+		String[] uneConsole = new String[unJeu.getConsoles().size()];
+		uneConsole = unJeu.getConsoles().toArray(uneConsole);
 		
-		}
-*/
+		if(ensemble != null) {
+			boolean jeuExiste = false;
+			for(Jeu j : ensemble) {
+
+				if(unJeu.equals(j)) {
+					for(int i=0; i<uneConsole.length; i++ ){
+						j.addConsoles(uneConsole[i]);
+						jeuExiste = true;
+					}	
+				} 
+			} 
+			if(!jeuExiste) {
+				ensemble.add(unJeu);
+			} 						
+		} else {
+			ensemble = new TreeSet<Jeu>();
+			ensemble.add(unJeu);
+			jeuxVideo.put(fabricant, ensemble);
+		}	
+		System.out.println(jeuxVideo);
+
     }
 
 	public Jeu getJeu(String titre, String fabricant){
@@ -87,51 +101,27 @@ public class Bdd implements TestInterface{
 					String cote = infoJeux[2]; 
 					String consoles = infoJeux[3]; 
 					String[] uneConsole = consoles.split(",");
-
-/*
-					System.out.println(fabricant);
-					System.out.println(titre);
-					System.out.println(cote);
-					System.out.println(consoles);
-					for(int i=0; i<uneConsole.length; i++) {
-						System.out.println("uneConsole" + uneConsole[i]);
-
-					}
-*/
-		
-
 					
-					Jeu nouv = new Jeu(fabricant, titre, cote);
-
+					Jeu nouv = new Jeu(fabricant, titre, cote, new LinkedHashSet<String>(Arrays.asList(uneConsole)));
+					//System.out.println("nouv " + nouv);
 					// Ajout des consoles au jeu
-					for(int i=0; i<uneConsole.length; i++ ){
-						nouv.addConsoles(uneConsole[i]);
-					}					
+					
 
 					// Si le fabricant est dans la base de donnees, on y ajoute le jeu, sinon on cree un ensemble avec 
 					// ce fabricant
+					addJeu(nouv);
+					/*
 					ensemble = jeuxVideo.get(fabricant);
-					//String test = nouv.getTitre();
-					//System.out.println("nouvGetTitre " +nouv.getTitre());
-
-					//System.out.println("test "+ test);
-					//System.out.println(ensemble.contains(jeuxVideo.getTitre()));
-
-					ArrayList<Jeu> jeuAAjouter = new ArrayList();
 
 					if(ensemble != null) {
-						//caller addJeu nouv.addJeu();
-	
-						
+						//caller addJeu nouv.addJeu();			
 						boolean jeuExiste = false;
 						for(Jeu j : ensemble) {
 
 							if(nouv.equals(j)) {
-								//j.add(consoles);
 								for(int i=0; i<uneConsole.length; i++ ){
 									j.addConsoles(uneConsole[i]);
 									jeuExiste = true;
-									// jeuAAjouter.add(nouv);
 								}	
 							} 
 						} 
@@ -142,47 +132,9 @@ public class Bdd implements TestInterface{
 						ensemble = new TreeSet<Jeu>();
 						ensemble.add(nouv);
 						jeuxVideo.put(fabricant, ensemble);
-					}
-
-					
-
-					//verifier si un jeu contient le fabricant et le titre, si oui, y ajouter juste consoles
-					// sinon, ajouter le jeu
-					//String verifFab = ensemble.get(fabricant);
-					//String verifTitre = ensemble.get(titre);
-					//System.out.println(nouv.containsValue("verif " + verifFab));	
-					//if(nouv.containsValue(verifFab) )	
-					
-					/*
-					********************fonctione pour ajouter, mais garde juste le dernier fabricant de la liste****************
-					ensemble = new TreeSet<Jeu>();
-					ensemble.add(nouv);
-					jeuxVideo.put(fabricant, ensemble);
+					}	
 					*/
-
-					/*
-
-					while (!chanson.equals("---"))
-					{  nouv.addChanson(chanson);
-						chanson = entree.readLine();
-					}
-					*/
-					// ensemble.add(nouv);
-
-					
-					/*
-					ensemble = discographie.get(artiste);
-					if(ensemble != null)
-						ensemble.add(nouv);
-					else{
-						ensemble = new TreeSet<Album>();
-						ensemble.add(nouv);
-						discographie.put(artiste,ensemble);
-					}
-					*/
-					
 				}
-
 				else finFichier = true;
 			}
 			entree.close();
@@ -193,17 +145,7 @@ public class Bdd implements TestInterface{
 		} catch(IOException e) {
 			System.out.println("Erreur lors de la lecture du fichier");
 		}
-		System.out.println(jeuxVideo);
-
-		  //System.out.println(discographie);
-
-		  //System.out.println("\nLes album contenant Big time sont :\n");
-		  //System.out.println(trouveChanson(discographie,"Big time"));
-
-	   
-
-// a completer
-		
+		//System.out.println(jeuxVideo);	 
 	}
 
 	public ArrayList<Jeu> chercheConsole(String console){
@@ -261,23 +203,15 @@ public class Bdd implements TestInterface{
 		return jeuxCote;
 	}
 
-	public void saveBdd(String nomFichier){
-	//A completer
-	/*
+	public void saveBdd(String nomFichier){	
 		// Creation d'un fichier
-	static void creerFichier(Nation[] pays, int nbPays, int continentVoulu, String nomACreer) 
-			throws IOException
-	{
+		/*
 		boolean probleme = false;
 		FileWriter fw = null;
 		try
 		{
 			fw = new FileWriter(nomACreer);
-		} catch(java.io.FileNotFoundException erreur)
-		{
-			System.out.println("Probleme pour preparer l'ecriture\n");
-			probleme = true;
-		}
+
 		if(!probleme)
 		{
 			System.out.println("Debut de la creation du fichier " + nomACreer + "\n");
@@ -290,46 +224,20 @@ public class Bdd implements TestInterface{
 			}
 			
 			aCreer.close();
+
+		} catch(java.io.FileNotFoundException erreur){
+			System.out.println("Probleme pour preparer l'ecriture\n");
+			probleme = true;
+		} catch(IOException e) {
+			System.out.println("Erreur lors de l'ecriture du fichier");
+		}
 			System.out.println("Fin de la creation du fichier " + nomACreer + "\n\n");
 		}
-	}
+	
 	
 
-		TreeSet<Jeu> ensemble = new TreeSet<Jeu>();
-		FileReader fr = null;
-		boolean existeFile = true;
-		boolean finFichier = false;
-		String nomFile = "jeu.txt";
-		try {
-			fr = new FileReader(nomFile);
-		} catch (java.io.FileNotFoundException e) {
-			System.out.println("Probleme d'ouvrir le fichier " + nomFile);
-			existeFile = false;
-		}
-
-		if (existeFile) {
-		BufferedReader entree = new BufferedReader (fr);
-
-		while (!finFichier) {
-			String artiste = entree.readLine(); // null si fin de fichier
-			if (artiste != null){
-
-				String titre = entree.readLine();
-				Album nouv = new Jeu(artiste,titre);
-				String chanson = entree.readLine();
-
-				while (!chanson.equals("---"))
-				{  nouv.addChanson(chanson);
-					chanson = entree.readLine();
-				}
-					ensemble.add(nouv);
-			}
-			else finFichier = true;
-		}
-		entree.close();
-		}
-		*/
+*/	
 	}
-	
+
 
 }
