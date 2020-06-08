@@ -4,9 +4,10 @@ import java.io.*;
 public class TP1 {
 
 	// Pour faire afficher un jeu.  a modifier pour le tp2
-	public static void afficherJeu(TestInterface b, String fab, String titre ){
+	public static void afficherJeu(TestInterface b, String fab, String titre ) 			
+	throws IOException 
+	{
 		Jeu aAfficher = b.getJeu(titre, fab);
-
 		if( aAfficher != null)
 			System.out.println("aAfficher " + aAfficher);
 		else
@@ -16,11 +17,14 @@ public class TP1 {
 
 
 
-    public static void main(String[] args) 	throws IOException 
+    public static void main(String[] args) 	 
  	{
 		LinkedHashSet<String> linkedset =  
                            new LinkedHashSet<String>();   
   
+		TestInterface laBase = new Bdd();
+
+/*
         // Adding element to LinkedHashSet   
         linkedset.add("Nintendo");   
         linkedset.add("Xbox");   
@@ -28,22 +32,24 @@ public class TP1 {
 		Jeu jeu1 = new Jeu("Ubisoft", "Sims", "T", linkedset);
 		//System.out.println(jeu1);
 
-		Jeu jeu2 = new Jeu("Ubisoft", "Beat Saber", "A", linkedset);
+		Jeu jeu2 = new Jeu("Ubisoft", "Beat Saber", "AT", linkedset);
+*/
+		
 
-    	TestInterface laBase = new Bdd();
-    	Jeu unJeu = new Jeu("EA", "The Sims 5", "M");
-
+    	Jeu unJeu = new Jeu("EA", "The Sims 4", "R", new LinkedHashSet<String>(Arrays.asList("PS4,XONE,PC".split(","))));
+		System.out.println("cac " + unJeu);
     	//laBase.addJeu(unJeu);
-		laBase.addJeu(jeu1);
+		//laBase.addJeu(jeu1);
 		laBase.addJeu(unJeu);
-		laBase.addJeu(jeu2);
-
+		//laBase.addJeu(jeu2);
+/*
 		laBase.getJeu("Sims", "Ubisoft");
 
 		//laBase.getJeu("EA", "The Sims 5");
 
-		System.out.println("Les infos sur les Sims 5 : ");
+		System.out.println("\nLes infos sur les Sims 5 : ");
     	afficherJeu(laBase, "EA", "The Sims 5");
+		System.out.println("\nLes infos sur les Sims 5 : ");
     	afficherJeu(laBase, "Ubisoft", "Sims");
 
 
@@ -54,6 +60,8 @@ public class TP1 {
 		//List<Jeu> lstSwitch = laBase.chercheConsole("Xbox");
 
 
+	// etait pas la...
+
 		Collection<Jeu> colFab = laBase.getJeuxFabricant("UBISOFT");
 		System.out.println("\n\nLes jeux de UBISOFT");
 		if(colFab==null)
@@ -62,6 +70,19 @@ public class TP1 {
 			for(Jeu j : colFab)
 			System.out.println(j);
 		}
+
+		Collection<Jeu> colCote = laBase.chercheCote("T");
+		System.out.println("\n\nLes jeux de cote T");
+		System.out.println(colCote);
+
+		Collection<Jeu> colCote2 = laBase.chercheCote("A");
+		System.out.println("\n\nLes jeux de cote A");
+		System.out.println(colCote2);
+
+*/
+		laBase.loadBdd("jeux.txt");
+		laBase.loadBdd("jeuxComplement.txt");
+
 		 /*
 
 
