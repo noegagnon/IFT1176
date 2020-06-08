@@ -75,6 +75,10 @@ public class Jeu implements Comparable<Jeu> //a completer
         return resultat;
     }
 
+    public void addConsoles(String c){
+		consoles.add(c);
+	}
+
     public String getFabricant()
     {
         return fabricant;
@@ -100,12 +104,12 @@ public class Jeu implements Comparable<Jeu> //a completer
         }
         return false;
     }
-/*
-    public LinkedHashSet getConsoles()
+
+    public LinkedHashSet<String> getConsoles()
     {
         return consoles;
     }
-*/
+
 
 /*
     public String getConsole(int index)
