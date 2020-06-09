@@ -1,3 +1,8 @@
+/*
+NOM: Gagnon
+PRENOM: Noemie
+*/
+
 import java.util.*;
 import java.io.*;
 
@@ -15,14 +20,12 @@ public class TP1 {
 	}
 
 
-
-
     public static void main(String[] args) 	 
  	{
 		LinkedHashSet<String> linkedset =  
                            new LinkedHashSet<String>();   
   
-		TestInterface laBase = new Bdd();
+		//TestInterface laBase = new Bdd();
 
 /*
         // Adding element to LinkedHashSet   
@@ -34,18 +37,19 @@ public class TP1 {
 
 		Jeu jeu2 = new Jeu("Ubisoft", "Beat Saber", "AT", linkedset);
 */
-		
+		/*
 
     	Jeu unJeu = new Jeu("EA", "The Sims 4", "R", new LinkedHashSet<String>(Arrays.asList("PS4,XONE,PC".split(","))));
 		System.out.println("cac " + unJeu);
     	//laBase.addJeu(unJeu);
 		//laBase.addJeu(jeu1);
 		laBase.addJeu(unJeu);
+		
 		//laBase.addJeu(jeu2);
-/*
-		laBase.getJeu("Sims", "Ubisoft");
 
-		//laBase.getJeu("EA", "The Sims 5");
+		//laBase.getJeu("Sims", "Ubisoft");
+
+		laBase.getJeu("EA", "The Sims 5");
 
 		System.out.println("\nLes infos sur les Sims 5 : ");
     	afficherJeu(laBase, "EA", "The Sims 5");
@@ -79,10 +83,10 @@ public class TP1 {
 		System.out.println("\n\nLes jeux de cote A");
 		System.out.println(colCote2);
 
-*/
+
 		laBase.loadBdd("jeux.txt");
 		laBase.loadBdd("jeuxComplement.txt");
-
+*/
 		 /*
 
 
@@ -120,7 +124,7 @@ public class TP1 {
 			entree.close();
 		}
 		*/
-/*
+
     	TestInterface laBase = new Bdd();
     	Jeu unJeu;
 
@@ -172,7 +176,7 @@ public class TP1 {
 		}
 
 		laBase.saveBdd("sauvegarde.txt");
-    */
+    
 	}
 	
 }

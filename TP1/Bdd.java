@@ -1,3 +1,8 @@
+/*
+NOM: Gagnon
+PRENOM: Noemie
+*/
+
 import java.util.*;
 import java.io.*;
 
@@ -58,13 +63,8 @@ public class Bdd implements TestInterface{
 		return null;
 	}
 
-
+	// Ajoute les donnes du fichier passee en parametre a la banque de donnees
 	public void addBdd(String nomFile){
-		// a completer
-	}
-
-	public void loadBdd(String nomFile){
-
 		FileReader fr = null;
 		boolean existeFile = true;
 		boolean finFichier = false;
@@ -93,7 +93,14 @@ public class Bdd implements TestInterface{
 			existeFile = false;
 		} catch(IOException e) {
 			System.out.println("Erreur lors de la lecture du fichier");
-		}
+		}	
+	}
+
+	public void loadBdd(String nomFile){
+		Map<String, TreeSet<Jeu>> jeuxVid = new LinkedHashMap<>();
+		TreeSet<Jeu> ens;
+		addBdd(nomFile);
+		// a completer
 	}
 
 	// Retourne les jeu pouvant se jouer sur la console passee en parametre

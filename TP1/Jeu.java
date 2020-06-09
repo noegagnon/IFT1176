@@ -1,3 +1,8 @@
+/*
+NOM: Gagnon
+PRENOM: Noemie
+*/
+
 import java.util.*;
 
 public class Jeu implements Comparable<Jeu> //a completer
