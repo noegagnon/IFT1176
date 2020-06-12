@@ -20,7 +20,7 @@ public class TP1 {
 	}
 
 
-    public static void main(String[] args) 	 
+    public static void main(String[] args) throws IOException
  	{
 		LinkedHashSet<String> linkedset =  
                            new LinkedHashSet<String>();   
@@ -87,43 +87,9 @@ public class TP1 {
 		laBase.loadBdd("jeux.txt");
 		laBase.loadBdd("jeuxComplement.txt");
 */
-		 /*
+		 
 
 
-		FileReader fr = null;
-		boolean existeFichier = true;
-		boolean finFichier = false;
-		String nomFichier = "jeux.txt";
-
-
-		try {
-			fr = new FileReader(nomFichier);
-		}
-
-		catch(java.io.FileNotFoundException erreur) {
-			System.out.println("Probleme pour ouvrir le fichier " + nomFichier);
-			existeFichier = false;
-		}
-
-		if(existeFichier) {
-			BufferedReader entree = new BufferedReader(fr);
-			while(!finFichier) {
-				String uneLigne = entree.readLine();
-				if(uneLigne == null)  {
-					finFichier = true;
-				} else {
-					String information[] = uneLigne.split(";");
-					String fabricant = information[0];
-					String jeu = information[1];
-					String cote = information[2];
-					List<String> consoles = Arrays.asList(information[3].split(","));
-					System.out.println(consoles);		
-				}
-			}
-			
-			entree.close();
-		}
-		*/
 
     	TestInterface laBase = new Bdd();
     	Jeu unJeu;
@@ -138,6 +104,7 @@ public class TP1 {
     	afficherJeu(laBase, "EA", "The Sims 5");
 
     	laBase.loadBdd("jeux.txt");
+    	laBase.loadBdd("jeuxComplement.txt");
 
     	System.out.println("\n\nApr�s le load, les infos sur les Sims 5 : ");
     	afficherJeu(laBase, "EA", "The Sims 5");
@@ -150,6 +117,7 @@ public class TP1 {
 
 
 		laBase.addBdd("jeuxComplement.txt");
+		laBase.addBdd("jeux.txt");
 
 		System.out.println("\n\nApres le addBdd, les infos sur les Sims 5 : ");
     	afficherJeu(laBase, "EA", "The Sims 5");

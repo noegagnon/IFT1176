@@ -80,7 +80,7 @@ public class Jeu implements Comparable<Jeu> //a completer
         return resultat;
     }
 
-    public void addConsoles(String c){
+    public void addConsole(String c){
 		consoles.add(c);
 	}
 

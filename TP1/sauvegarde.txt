@@ -1,6 +1,5 @@
 EA;FIFA 2020;E;PS4,XONE,PC
 EA;NHL 2020;E;PS4,WIIU,XONE,PC
-EA;The Sims 4;R;PS4,XONE,PC
 EA;The Sims 5;M;PS4,XONE,PC
 LucasArts;Star Wars Clone Wars;T;PS2,GAMECUBE,XBOX,PC
 LucasArts;Star Wars Jedi : Fallen Order;PG;PS4,XONE,PC

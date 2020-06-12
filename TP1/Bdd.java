@@ -30,7 +30,7 @@ public class Bdd implements TestInterface{
 
 				if(unJeu.equals(j)) {
 					for(int i=0; i<uneConsole.length; i++ ){
-						j.addConsoles(uneConsole[i]);
+						j.addConsole(uneConsole[i]);
 						jeuExiste = true;
 					}	
 				} 
@@ -97,10 +97,12 @@ public class Bdd implements TestInterface{
 	}
 
 	public void loadBdd(String nomFile){
-		Map<String, TreeSet<Jeu>> jeuxVid = new LinkedHashMap<>();
-		TreeSet<Jeu> ens;
+		
+		Map<String, TreeSet<Jeu>> jeuxVideo = new LinkedHashMap<>();
+		TreeSet<Jeu> ensemble;
 		addBdd(nomFile);
 		// a completer
+		
 	}
 
 	// Retourne les jeu pouvant se jouer sur la console passee en parametre
@@ -132,7 +134,9 @@ public class Bdd implements TestInterface{
 		return jeuxFab;
 	}
 
-	// Retourne les jeu portant la cote passee en parametre
+	// Retourne les jeux portant la cote passee en parametre
+
+	//!!!!!!!!!!!!!! faut juste afficher a l'ecran
 	public Collection<Jeu> chercheCote(String cote){
 		Collection<Jeu> jeuxCote = new ArrayList();
 		Iterator<Jeu> it = ensemble.iterator();
