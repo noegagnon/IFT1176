@@ -20,7 +20,9 @@ public class Bdd implements TestInterface{
 		// Si le fabricant est dans la base de donnees, on y ajoute le jeu, sinon on cree un ensemble avec 
 		// ce fabricant
 		String fabricant = unJeu.getFabricant();
+
 		ensemble = jeuxVideo.get(fabricant);
+
 		String[] uneConsole = new String[unJeu.getConsoles().size()];
 		uneConsole = unJeu.getConsoles().toArray(uneConsole);
 		
@@ -36,6 +38,7 @@ public class Bdd implements TestInterface{
 				} 
 			} 
 			if(!jeuExiste) {
+				System.out.println("Le jeu does not exist adding to ensemble" + unJeu.getTitre());
 				ensemble.add(unJeu);
 			} 						
 		} else {
@@ -43,27 +46,34 @@ public class Bdd implements TestInterface{
 			ensemble.add(unJeu);
 			jeuxVideo.put(fabricant, ensemble);
 		}	
+		System.out.println("jeuxVideo " + jeuxVideo);
     }
 
 	// Retourne le jeu passe en parametre
 	public Jeu getJeu(String titre, String fabricant){
 		Jeu aTrouver = new Jeu(fabricant, titre);
 
-		if(ensemble.contains(aTrouver)) {
+
+		ensemble = jeuxVideo.get(fabricant);
+		if (ensemble != null) {
 			Iterator<Jeu> it = ensemble.iterator();
-		 	while(it.hasNext()) {
-		 		Jeu courant = it.next();
-		 		if (aTrouver.equals(courant)) {
+			while(it.hasNext()) {
+				Jeu courant = it.next();
+	
+				//System.out.println(courant);
+			
+				if (aTrouver.equals(courant)) {
 					return courant;
-		 		}
-		 	}
-		} else {
-			System.out.println("Le jeu " + aTrouver.getTitre() + " pas trouve");
+				}
+			}
+	
 		}
+
+		System.out.println("Le jeu " + aTrouver.getTitre() + " pas trouve");
 		return null;
 	}
 
-	// Ajoute les donnes du fichier passee en parametre a la banque de donnees
+	// Ajoute les donnees du fichier passee en parametre a la banque de donnees
 	public void addBdd(String nomFile){
 		FileReader fr = null;
 		boolean existeFile = true;
@@ -105,22 +115,46 @@ public class Bdd implements TestInterface{
 		
 	}
 
-	// Retourne les jeu pouvant se jouer sur la console passee en parametre
+	// Retourne le(s) jeu(x) pouvant se jouer sur la console passee en parametre
 	public ArrayList<Jeu> chercheConsole(String console){
 		ArrayList<Jeu> gameWithConsole= new ArrayList();
+		for(Map.Entry<String, TreeSet<Jeu>> entry : jeuxVideo.entrySet()) {
+			//System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
+			Iterator<Jeu> it = entry.getValue().iterator();
+			while(it.hasNext()) {
+				Jeu jeuCourant = it.next();
+				//System.out.println(jeuCourant);
+				System.out.println(jeuCourant.trouveConsole(console));
+				System.out.println(jeuCourant.getConsoles());
+				if(jeuCourant.trouveConsole(console)) {
+					System.out.println(jeuCourant);
+					gameWithConsole.add(jeuCourant);
+				}
+			}				
+		}
+		System.out.println(gameWithConsole);
+		return gameWithConsole;
+
+	}
+/*
 		Iterator<Jeu> it = ensemble.iterator();
+		System.out.println(ensemble);
 
 		while(it.hasNext()) {
 			Jeu jeuCourant = it.next();
+			//System.out.println(jeuCourant);
+			System.out.println(jeuCourant.trouveConsole(console));
+			System.out.println(jeuCourant.getConsoles());
 			if(jeuCourant.trouveConsole(console)) {
+				System.out.println(jeuCourant);
 				gameWithConsole.add(jeuCourant);
 			}
 
 		}
 		return gameWithConsole;
 	}
-
-	// Retourne les jeu realises par le fabricant passe en parametre
+*/
+	// Retourne le(s) jeu(x) realise(s) par le fabricant passe en parametre
 	public Collection<Jeu> getJeuxFabricant(String fabricant){
 		Collection<Jeu> jeuxFab = new ArrayList();
 		Iterator<Jeu> it = ensemble.iterator();
@@ -134,23 +168,28 @@ public class Bdd implements TestInterface{
 		return jeuxFab;
 	}
 
-	// Retourne les jeux portant la cote passee en parametre
+	// Affiche le(s) jeu(x) portant la cote passee en parametre
 
-	//!!!!!!!!!!!!!! faut juste afficher a l'ecran
-	public Collection<Jeu> chercheCote(String cote){
-		Collection<Jeu> jeuxCote = new ArrayList();
-		Iterator<Jeu> it = ensemble.iterator();
+	// !!!!!!!!!!!!!!!1verifier s'il y a une cote (si pas null)
+	public void chercheCote(String cote){
+		//Collection<Jeu> jeuxCote = new ArrayList();
 
-		while(it.hasNext()) {
-			Jeu jeuCourant = it.next();
-			String[] toutesCotes = jeuCourant.getCote().split("");
-			for(int i=0; i<toutesCotes.length; i++) {
-				if(toutesCotes[i].equalsIgnoreCase(cote)) {
-					jeuxCote.add(jeuCourant);
+		System.out.println("Jeu(x) ayant la cote " + cote + ":");
+		for(Map.Entry<String, TreeSet<Jeu>> entry : jeuxVideo.entrySet()) {
+			//System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
+			Iterator<Jeu> it = entry.getValue().iterator();
+			while(it.hasNext()) {
+				Jeu jeuCourant = it.next();
+				//System.out.println("jeucourant " + jeuCourant);
+				String[] toutesCotes = jeuCourant.getCote().split("");
+				for(int i=0; i<toutesCotes.length; i++) {
+					//System.out.println(toutesCotes[i]);
+					if(toutesCotes[i].equalsIgnoreCase(cote)) {
+						System.out.println(jeuCourant);
+					}
 				}
-			}
-		}	
-		return jeuxCote;
+			}				
+		}			
 	}
 
 	// Enregistre la banque de donnees dans un fichier dont le nom est passe en parametre

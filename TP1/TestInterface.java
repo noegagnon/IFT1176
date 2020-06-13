@@ -28,7 +28,7 @@ public interface TestInterface {
 	public Collection<Jeu> getJeuxFabricant(String fabricant);
 
 	// etait pas la...
-	public Collection<Jeu> chercheCote(String cote);
+	public void chercheCote(String cote);
 
 
 	public void saveBdd(String nomFichier);
