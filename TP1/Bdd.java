@@ -108,8 +108,8 @@ public class Bdd implements TestInterface{
 
 	public void loadBdd(String nomFile){
 		
-		Map<String, TreeSet<Jeu>> jeuxVideo = new LinkedHashMap<>();
-		TreeSet<Jeu> ensemble;
+		//Map<String, TreeSet<Jeu>> jeuxVideo = new LinkedHashMap<>();
+		//TreeSet<Jeu> ensemble;
 		addBdd(nomFile);
 		// a completer
 		
@@ -117,7 +117,7 @@ public class Bdd implements TestInterface{
 
 	// Retourne le(s) jeu(x) pouvant se jouer sur la console passee en parametre
 	public ArrayList<Jeu> chercheConsole(String console){
-		ArrayList<Jeu> gameWithConsole= new ArrayList();
+		ArrayList<Jeu> gameWithConsole = new ArrayList<Jeu>();
 		for(Map.Entry<String, TreeSet<Jeu>> entry : jeuxVideo.entrySet()) {
 			//System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
 			Iterator<Jeu> it = entry.getValue().iterator();
@@ -136,27 +136,10 @@ public class Bdd implements TestInterface{
 		return gameWithConsole;
 
 	}
-/*
-		Iterator<Jeu> it = ensemble.iterator();
-		System.out.println(ensemble);
 
-		while(it.hasNext()) {
-			Jeu jeuCourant = it.next();
-			//System.out.println(jeuCourant);
-			System.out.println(jeuCourant.trouveConsole(console));
-			System.out.println(jeuCourant.getConsoles());
-			if(jeuCourant.trouveConsole(console)) {
-				System.out.println(jeuCourant);
-				gameWithConsole.add(jeuCourant);
-			}
-
-		}
-		return gameWithConsole;
-	}
-*/
 	// Retourne le(s) jeu(x) realise(s) par le fabricant passe en parametre
 	public Collection<Jeu> getJeuxFabricant(String fabricant){
-		Collection<Jeu> jeuxFab = new ArrayList();
+		Collection<Jeu> jeuxFab = new ArrayList<Jeu>();
 
 		for(Map.Entry<String, TreeSet<Jeu>> entry : jeuxVideo.entrySet()) {
 			//System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
@@ -169,23 +152,9 @@ public class Bdd implements TestInterface{
 			}				
 		}
 		return jeuxFab;
-
-		/*
-		Iterator<Jeu> it = ensemble.iterator();
-
-		while(it.hasNext()) {
-			Jeu jeuCourant = it.next();
-			if(jeuCourant.getFabricant().equalsIgnoreCase(fabricant)) {
-				jeuxFab.add(jeuCourant);
-			}
-		}	
-		return jeuxFab;
-		*/
 	}
 
 	// Affiche le(s) jeu(x) portant la cote passee en parametre
-
-	// !!!!!!!!!!!!!!!1verifier s'il y a une cote (si pas null)
 	public void chercheCote(String cote){
 		//Collection<Jeu> jeuxCote = new ArrayList();
 
