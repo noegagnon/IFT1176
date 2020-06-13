@@ -124,15 +124,15 @@ public class Bdd implements TestInterface{
 			while(it.hasNext()) {
 				Jeu jeuCourant = it.next();
 				//System.out.println(jeuCourant);
-				System.out.println(jeuCourant.trouveConsole(console));
-				System.out.println(jeuCourant.getConsoles());
+				// System.out.println(jeuCourant.trouveConsole(console));
+				// SSystem.out.println(jeuCourant.getConsoles());
 				if(jeuCourant.trouveConsole(console)) {
-					System.out.println(jeuCourant);
+					//System.out.println(jeuCourant);
 					gameWithConsole.add(jeuCourant);
 				}
 			}				
 		}
-		System.out.println(gameWithConsole);
+		//System.out.println(gameWithConsole);
 		return gameWithConsole;
 
 	}
@@ -157,6 +157,20 @@ public class Bdd implements TestInterface{
 	// Retourne le(s) jeu(x) realise(s) par le fabricant passe en parametre
 	public Collection<Jeu> getJeuxFabricant(String fabricant){
 		Collection<Jeu> jeuxFab = new ArrayList();
+
+		for(Map.Entry<String, TreeSet<Jeu>> entry : jeuxVideo.entrySet()) {
+			//System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
+			Iterator<Jeu> it = entry.getValue().iterator();
+			while(it.hasNext()) {
+				Jeu jeuCourant = it.next();
+				if(jeuCourant.getFabricant().equalsIgnoreCase(fabricant)) {
+					jeuxFab.add(jeuCourant);
+				}
+			}				
+		}
+		return jeuxFab;
+
+		/*
 		Iterator<Jeu> it = ensemble.iterator();
 
 		while(it.hasNext()) {
@@ -166,6 +180,7 @@ public class Bdd implements TestInterface{
 			}
 		}	
 		return jeuxFab;
+		*/
 	}
 
 	// Affiche le(s) jeu(x) portant la cote passee en parametre
@@ -201,7 +216,7 @@ public class Bdd implements TestInterface{
 			fw = new FileWriter(nomFichier);
 			if(!probleme)
 			{
-				System.out.println("Debut de la creation du fichier " + nomFichier + "\n");
+				System.out.println("\nDebut de la creation du fichier " + nomFichier + "\n");
 				PrintWriter aCreer = new PrintWriter(fw);
 				for(Map.Entry<String, TreeSet<Jeu>> entry : jeuxVideo.entrySet()) {
 					//System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 

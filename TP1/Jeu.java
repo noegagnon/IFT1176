@@ -101,16 +101,18 @@ public class Jeu implements Comparable<Jeu> //a completer
 
 
     public Boolean trouveConsole(String uneConsole){
-
+        return consoles.contains(uneConsole);
+        /*
         for(String s : consoles) {
             System.out.println("s " + s + " " +  uneConsole);
-            if(s == uneConsole) {
+            if(s.equals(uneConsole)) {
                 System.out.println("if " + s + uneConsole);
  
                 return true;
             }
         }
         return false;
+        */
     }
 
     public LinkedHashSet<String> getConsoles()

@@ -136,15 +136,14 @@ public class TP1 {
 
 
 		System.out.println("\n\nLes jeux disponibles sur la SWITCH sont :");
-		List<Jeu> lstSwitch = laBase.chercheConsole("EA");
-		System.out.println("liste " + lstSwitch);
+		List<Jeu> lstSwitch = laBase.chercheConsole("SWITCH");
+		//System.out.println("liste " + lstSwitch);
 
 		for(Jeu j : lstSwitch)
 			System.out.println(j);
 
-/*
+
 		Collection<Jeu> colFab = laBase.getJeuxFabricant("UBISOFT");
-		System.out.println(colFab);
 		System.out.println("\n\nLes jeux de UBISOFT");
 		if(colFab==null)
 			System.out.println("Aucun jeu par UBISFOT");
@@ -154,7 +153,7 @@ public class TP1 {
 		}
 
 		laBase.saveBdd("sauvegarde.txt");
-    */
+    
 	}
 	
 }
