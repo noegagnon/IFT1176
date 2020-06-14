@@ -7,7 +7,6 @@ import java.util.*;
 import java.io.*;
 
 public class Bdd implements TestInterface{
-
 	private Map<String, TreeSet<Jeu>> jeuxVideo = new LinkedHashMap<>();
 	private TreeSet<Jeu> ensemble;
 
@@ -17,12 +16,8 @@ public class Bdd implements TestInterface{
 
 	// Ajoute le jeu passe en parametre a la banque de donnees
     public void addJeu(Jeu unJeu){
-		// Si le fabricant est dans la base de donnees, on y ajoute le jeu, sinon on cree un ensemble avec 
-		// ce fabricant
 		String fabricant = unJeu.getFabricant();
-
 		ensemble = jeuxVideo.get(fabricant);
-
 		String[] uneConsole = new String[unJeu.getConsoles().size()];
 		uneConsole = unJeu.getConsoles().toArray(uneConsole);
 		
@@ -38,7 +33,6 @@ public class Bdd implements TestInterface{
 				} 
 			} 
 			if(!jeuExiste) {
-				System.out.println("Le jeu does not exist adding to ensemble" + unJeu.getTitre());
 				ensemble.add(unJeu);
 			} 						
 		} else {
@@ -46,30 +40,22 @@ public class Bdd implements TestInterface{
 			ensemble.add(unJeu);
 			jeuxVideo.put(fabricant, ensemble);
 		}	
-		System.out.println("jeuxVideo " + jeuxVideo);
     }
 
 	// Retourne le jeu passe en parametre
 	public Jeu getJeu(String titre, String fabricant){
 		Jeu aTrouver = new Jeu(fabricant, titre);
-
-
 		ensemble = jeuxVideo.get(fabricant);
 		if (ensemble != null) {
 			Iterator<Jeu> it = ensemble.iterator();
 			while(it.hasNext()) {
-				Jeu courant = it.next();
-	
-				//System.out.println(courant);
-			
+				Jeu courant = it.next();			
 				if (aTrouver.equals(courant)) {
 					return courant;
 				}
 			}
-	
 		}
-
-		System.out.println("Le jeu " + aTrouver.getTitre() + " pas trouve");
+		System.out.println("Le jeu " + aTrouver.getTitre() + " n'est pas trouve");
 		return null;
 	}
 
@@ -106,13 +92,11 @@ public class Bdd implements TestInterface{
 		}	
 	}
 
+	// Charge la banque de donnees a partir du fichier passe en parametre et remplace son contenu s'il y a lieu
 	public void loadBdd(String nomFile){
-		
-		//Map<String, TreeSet<Jeu>> jeuxVideo = new LinkedHashMap<>();
-		//TreeSet<Jeu> ensemble;
-		addBdd(nomFile);
-		// a completer
-		
+		jeuxVideo = new LinkedHashMap<>();
+		ensemble = new TreeSet<Jeu>();
+		addBdd(nomFile);		
 	}
 
 	// Retourne le(s) jeu(x) pouvant se jouer sur la console passee en parametre
@@ -156,9 +140,7 @@ public class Bdd implements TestInterface{
 
 	// Affiche le(s) jeu(x) portant la cote passee en parametre
 	public void chercheCote(String cote){
-		//Collection<Jeu> jeuxCote = new ArrayList();
-
-		System.out.println("Jeu(x) ayant la cote " + cote + ":");
+		System.out.println("\nJeu(x) ayant la cote " + cote + ":");
 		for(Map.Entry<String, TreeSet<Jeu>> entry : jeuxVideo.entrySet()) {
 			//System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
 			Iterator<Jeu> it = entry.getValue().iterator();

@@ -5,7 +5,7 @@ PRENOM: Noemie
 
 import java.util.*;
 
-public class Jeu implements Comparable<Jeu> //a completer
+public class Jeu implements Comparable<Jeu> 
 {
     private String fabricant;
     private String titre;
@@ -45,10 +45,8 @@ public class Jeu implements Comparable<Jeu> //a completer
         }
     }
 
-    // tri selon fabricant, puis selon le nom du jeu
     public int compareTo(Jeu autre){
         int res = titre.compareTo(autre.titre);
-        //si meme nom de fabricant
         if(res==0)
             res = fabricant.compareTo(autre.fabricant);
         return res;
@@ -56,27 +54,15 @@ public class Jeu implements Comparable<Jeu> //a completer
 
     public int hashCode(){
 		return fabricant.hashCode() + titre.hashCode();
-	}
-		
+	}	
 
     public String toString(){
         String res = fabricant + ";" + titre + ";" + cote + ";"; 
-
-
- 
         if(consoles.size() != 0) {
             for(String s : consoles)
-            {
-             //   System.out.printf("res %s\n", res);
-               // System.out.printf("s %s\n", s);
-               // System.out.printf("consoles %s\n", consoles);
                 res += s + ",";
-            }
-
         }
-
         String resultat = res.substring(0,res.length()-1);
-        
         return resultat;
     }
 
@@ -99,32 +85,12 @@ public class Jeu implements Comparable<Jeu> //a completer
         return cote;
     }
 
-
     public Boolean trouveConsole(String uneConsole){
         return consoles.contains(uneConsole);
-        /*
-        for(String s : consoles) {
-            System.out.println("s " + s + " " +  uneConsole);
-            if(s.equals(uneConsole)) {
-                System.out.println("if " + s + uneConsole);
- 
-                return true;
-            }
-        }
-        return false;
-        */
     }
 
     public LinkedHashSet<String> getConsoles()
     {
         return consoles;
     }
-
-
-/*
-    public String getConsole(int index)
-    {
-        return consoles.get(index);
-    }
-    */
 }
