@@ -1,2 +1,0 @@
-EA;NHL 2020;E;PS4,WIIU,XONE,PC
-LucasArts;Star Wars Clone Wars;T;PS2,GAMECUBE,XBOX,PC
