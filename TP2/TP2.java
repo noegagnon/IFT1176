@@ -18,16 +18,20 @@ public class TP2 extends JFrame implements ActionListener{
 	private JPanel loadBddPanel = new loadPanel();
 	private JPanel addBddPanel = new addPanel();
 	private JPanel saveBddPanel = new savePanel();
+	private JPanel addJeuPanel = new addJeuPanel();
 	private JPanel getJeuPanel = new getJeuPanel();
 	private JPanel chercheConsolePanel = new consolePanel();
 	private JPanel getJeuFabPanel = new fabricantPanel();
 	private JPanel chercheCotePanel = new cotePanel();
 
-	
 	// menu
 	private TextField tf;
 	private TextField bddAAdd;
 	private TextField bddALoad;
+	private TextField titreAAjouter;
+	private TextField fabricantAAjouter;
+	private TextField coteAAjouter;
+
 	private TextField fabricant;
 	private TextField titre;
 	private TextField console;
@@ -49,7 +53,7 @@ public class TP2 extends JFrame implements ActionListener{
 
 	
 	TestInterface laBase = new Bdd();
-	
+	Jeu unJeu;	
 
 	public TP2(int l, int h){
 		setSize(l,h);
@@ -128,6 +132,16 @@ public class TP2 extends JFrame implements ActionListener{
 
 			}
 		});
+
+		addJeu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				//frame1.dispose();
+				//new addBdd();
+				swapPanel(addJeuPanel);
+
+			}
+		});
+		
 		
 		getJeu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -278,6 +292,65 @@ public class TP2 extends JFrame implements ActionListener{
             }
         });
     }
+
+    
+    // add Jeu
+    public class addJeuPanel extends JPanel implements ActionListener {{
+        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
+
+		JButton buttonAddJeu = new JButton("addJeu bdd");
+		JButton buttonReset = new JButton("Reset");
+		buttonAddJeu.addActionListener(this);
+		buttonReset.addActionListener(this);
+		JLabel ajouterTitre = new JLabel("Veuillez entrez le titre du jeu a ajouter");
+		JLabel ajouterFabricant = new JLabel("Veuillez entrez le fabricant du jeu a ajouter");
+		JLabel ajouterCote = new JLabel("Veuillez entrez la cote du jeu a ajouter");
+
+		titreAAjouter = new TextField(50);
+		fabricantAAjouter = new TextField(50);
+		coteAAjouter = new TextField(50);
+		
+		this.add(buttonAddJeu);
+		this.add(buttonReset);
+		this.add(ajouterTitre);
+		this.add(titreAAjouter);
+		this.add(ajouterFabricant);
+		this.add(fabricantAAjouter);
+		this.add(ajouterCote);
+		this.add(coteAAjouter);
+
+    }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+		// tf.getText() ca fait rien, donc fonctionne pas.
+		String strTitreAAjouter = titreAAjouter.getText();
+		String strFabAAjouter = fabricantAAjouter.getText();
+		String strCoteAAjouter = coteAAjouter.getText();
+		
+		
+		String action = e.getActionCommand();
+		System.out.println(titreAAjouter);
+		System.out.println(fabricantAAjouter);
+
+		System.out.println("action" + action);
+		if(action == "addJeu bdd") {
+	    	unJeu = new Jeu(strFabAAjouter, strTitreAAjouter, strCoteAAjouter);
+	    	laBase.addJeu(unJeu);
+			//reponse.setText(laBase.getJeu(strTitre, strFabricant));
+	    	// afficher le jeu.. type Jeu pas string
+		}
+
+		if(action == "Reset") {
+			titreAAjouter.setText("");
+			fabricantAAjouter.setText("");
+			coteAAjouter.setText("");
+			
+		} 	
+	}}
     
     // get Jeu
     public class getJeuPanel extends JPanel implements ActionListener {{
@@ -357,7 +430,7 @@ public class TP2 extends JFrame implements ActionListener{
 		String action = e.getActionCommand();
 		System.out.println(strConsole);
 		System.out.println("action" + action);
-		if(action == "Cherche jeux sur cette console") {
+		if(action == "Chercher les jeux pour cette console") {
 	    	laBase.chercheConsole(strConsole);
 		}
 
