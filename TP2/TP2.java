@@ -18,8 +18,11 @@ public class TP2 extends JFrame implements ActionListener{
 	private JPanel loadBddPanel = new loadPanel();
 	private JPanel addBddPanel = new addPanel();
 	private JPanel saveBddPanel = new savePanel();
-
 	private JPanel getJeuPanel = new getJeuPanel();
+	private JPanel chercheConsolePanel = new consolePanel();
+	private JPanel getJeuFabPanel = new fabricantPanel();
+	private JPanel chercheCotePanel = new cotePanel();
+
 	
 	// menu
 	private TextField tf;
@@ -27,7 +30,11 @@ public class TP2 extends JFrame implements ActionListener{
 	private TextField bddALoad;
 	private TextField fabricant;
 	private TextField titre;
+	private TextField console;
+	private TextField fab;
+	private TextField cote;
 
+	
 	private JMenu fichier;
 	private JMenuItem loadBdd;
 	private JMenuItem addBdd;
@@ -127,6 +134,33 @@ public class TP2 extends JFrame implements ActionListener{
 				//frame1.dispose();
 				//new addBdd();
 				swapPanel(getJeuPanel);
+
+			}
+		});
+		
+		chercheConsole.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				//frame1.dispose();
+				//new addBdd();
+				swapPanel(chercheConsolePanel);
+
+			}
+		});
+		
+		getJeuFabricant.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				//frame1.dispose();
+				//new addBdd();
+				swapPanel(getJeuFabPanel);
+
+			}
+		});
+		
+		chercheCote.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				//frame1.dispose();
+				//new addBdd();
+				swapPanel(chercheCotePanel);
 
 			}
 		});
@@ -295,6 +329,113 @@ public class TP2 extends JFrame implements ActionListener{
 			fabricant.setText("");
 		} 	
 	}}
+    
+    
+    public class consolePanel extends JPanel implements ActionListener {{
+        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
+
+		JButton buttonConsole = new JButton("Chercher les jeux pour cette console");
+		JButton buttonReset = new JButton("Reset");
+		buttonConsole.addActionListener(this);
+		buttonReset.addActionListener(this);
+		JLabel consoleAEcrire = new JLabel("Veuillez entrez une console");
+
+		console = new TextField(50);
+		this.add(buttonConsole);
+		this.add(buttonReset);
+		this.add(consoleAEcrire);
+		this.add(console);
+    }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+		// tf.getText() ca fait rien, donc fonctionne pas.
+		String strConsole = console.getText();
+		String action = e.getActionCommand();
+		System.out.println(strConsole);
+		System.out.println("action" + action);
+		if(action == "Cherche jeux sur cette console") {
+	    	laBase.chercheConsole(strConsole);
+		}
+
+		if(action == "Reset") {
+			console.setText("");
+		} 	
+	}}
+    
+    public class fabricantPanel extends JPanel implements ActionListener {{
+        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
+
+		JButton buttonFabricant = new JButton("Chercher les jeux de ce fabricant");
+		JButton buttonReset = new JButton("Reset");
+		buttonFabricant.addActionListener(this);
+		buttonReset.addActionListener(this);
+		JLabel fabricantAEcrire = new JLabel("Veuillez entrez un fabricant");
+
+		fab = new TextField(50);
+		this.add(buttonFabricant);
+		this.add(buttonReset);
+		this.add(fabricantAEcrire);
+		this.add(fab);
+    }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+		// tf.getText() ca fait rien, donc fonctionne pas.
+		String strFabricant = fab.getText();
+		String action = e.getActionCommand();
+		System.out.println(strFabricant);
+		System.out.println("action" + action);
+		if(action == "Chercher les jeux de ce fabricant") {
+	    	laBase.getJeuxFabricant(strFabricant);
+		}
+
+		if(action == "Reset") {
+			fab.setText("");
+		} 	
+	}}
+    
+    public class cotePanel extends JPanel implements ActionListener {{
+        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
+
+		JButton buttonCote = new JButton("Chercher les jeux avec cette cote");
+		JButton buttonReset = new JButton("Reset");
+		buttonCote.addActionListener(this);
+		buttonReset.addActionListener(this);
+		JLabel coteAEcrire = new JLabel("Veuillez entrez une cote");
+
+		cote = new TextField(50);
+		this.add(buttonCote);
+		this.add(buttonReset);
+		this.add(coteAEcrire);
+		this.add(cote);
+    }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+		// tf.getText() ca fait rien, donc fonctionne pas.
+		String strCote = cote.getText();
+		String action = e.getActionCommand();
+		System.out.println(strCote);
+		System.out.println("action" + action);
+		if(action == "Chercher les jeux avec cette cote") {
+	    	laBase.chercheCote(strCote);
+		}
+
+		if(action == "Reset") {
+			cote.setText("");
+		} 	
+	}}
+    
 	public static void afficherJeu(TestInterface b, String fab, String titre ) 			
 	throws IOException 
 	{
