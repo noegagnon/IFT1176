@@ -31,7 +31,6 @@ public class TP2 extends JFrame implements ActionListener{
 	private TextField titreAAjouter;
 	private TextField fabricantAAjouter;
 	private TextField coteAAjouter;
-
 	private TextField fabricant;
 	private TextField titre;
 	private TextField console;
@@ -56,7 +55,6 @@ public class TP2 extends JFrame implements ActionListener{
 	Jeu unJeu;	
 
 	public TP2(int l, int h){
-		setSize(l,h);
 		
 		//menu
 		JMenuBar mb = new JMenuBar();
@@ -101,8 +99,10 @@ public class TP2 extends JFrame implements ActionListener{
 		frame1.setJMenuBar(mb);
 		frame1.add(currentPanel, BorderLayout.CENTER);
 		frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame1.setTitle("Menu");
-		frame1.pack();
+		frame1.setTitle("Gestion d'une banque de donnees de jeux videos");
+		frame1.setSize(l, h);
+		frame1.setLocationRelativeTo(null);
+		//frame1.pack();
 		frame1.setVisible(true);
 		frame1.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
@@ -188,10 +188,12 @@ public class TP2 extends JFrame implements ActionListener{
 		JButton buttonReset = new JButton("Reset");
 		buttonLoad.addActionListener(this);
 		buttonReset.addActionListener(this);
-		
+		JLabel demandeFichier = new JLabel("Veuillez entrez le nom du fichier (.txt) a charger");
+
 		bddALoad = new TextField(50);
 		this.add(buttonLoad);
 		this.add(buttonReset);
+		this.add(demandeFichier);
 		this.add(bddALoad);
     }
 
@@ -206,6 +208,7 @@ public class TP2 extends JFrame implements ActionListener{
 		System.out.println("action" + action);
 		if(action == "Load bdd") {
 	    	laBase.loadBdd(text);
+
 		}
 
 		if(action == "Reset") {
@@ -222,10 +225,13 @@ public class TP2 extends JFrame implements ActionListener{
 		JButton buttonReset = new JButton("Reset");
 		buttonSave.addActionListener(this);
 		buttonReset.addActionListener(this);
+		JLabel demandeFichier = new JLabel("Veuillez entrez le nom du fichier dans lequel sauvegarder la banque de donnees");
+
 		
 		tf = new TextField(50);
 		this.add(buttonSave);
 		this.add(buttonReset);
+		this.add(demandeFichier);
 		this.add(tf);
     }
 
@@ -248,7 +254,7 @@ public class TP2 extends JFrame implements ActionListener{
 	}}
     
     public class addPanel extends JPanel implements ActionListener {{
-        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        //this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
 
 		JButton buttonAdd = new JButton("Add bdd");
@@ -256,9 +262,11 @@ public class TP2 extends JFrame implements ActionListener{
 		buttonAdd.addActionListener(this);
 		buttonReset.addActionListener(this);
 		
+		JLabel demandeFichier = new JLabel("Veuillez entrez le nom du fichier a ajouter a la banque de donnees");
 		bddAAdd = new TextField(50);
 		this.add(buttonAdd);
 		this.add(buttonReset);
+		this.add(demandeFichier);
 		this.add(bddAAdd);
     }
 
@@ -326,7 +334,6 @@ public class TP2 extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
-		// tf.getText() ca fait rien, donc fonctionne pas.
 		String strTitreAAjouter = titreAAjouter.getText();
 		String strFabAAjouter = fabricantAAjouter.getText();
 		String strCoteAAjouter = coteAAjouter.getText();
@@ -340,8 +347,10 @@ public class TP2 extends JFrame implements ActionListener{
 		if(action == "addJeu bdd") {
 	    	unJeu = new Jeu(strFabAAjouter, strTitreAAjouter, strCoteAAjouter);
 	    	laBase.addJeu(unJeu);
-			//reponse.setText(laBase.getJeu(strTitre, strFabricant));
-	    	// afficher le jeu.. type Jeu pas string
+	    	JOptionPane.showMessageDialog(frame1,
+	    		    "Le jeu " + strTitreAAjouter + " du fabricant " + strFabAAjouter + " ayant une cote " + strCoteAAjouter + " a bien ete ajoute a la banque de donnees",
+	    		    "Ajout d'un jeu",
+	    		    JOptionPane.PLAIN_MESSAGE);
 		}
 
 		if(action == "Reset") {
@@ -356,7 +365,6 @@ public class TP2 extends JFrame implements ActionListener{
     public class getJeuPanel extends JPanel implements ActionListener {{
         //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
-
 		JButton buttonGetJeu = new JButton("getJeu bdd");
 		JButton buttonReset = new JButton("Reset");
 		buttonGetJeu.addActionListener(this);
@@ -393,8 +401,18 @@ public class TP2 extends JFrame implements ActionListener{
 		System.out.println("action" + action);
 		if(action == "getJeu bdd") {
 	    	laBase.getJeu(strTitre, strFabricant);
-			//reponse.setText(laBase.getJeu(strTitre, strFabricant));
-	    	// afficher le jeu.. type Jeu pas string
+	    	if(laBase.getJeu(strTitre, strFabricant) != null) {
+		    	JOptionPane.showMessageDialog(frame1,
+		    			"Voici le jeu recherché : \n" + laBase.getJeu(strTitre, strFabricant),
+		    		    "Jeu recherché",
+		    		    JOptionPane.PLAIN_MESSAGE);	    		
+	    	} else {
+		    	JOptionPane.showMessageDialog(frame1,
+		    			"Le jeu " + strTitre + "du fabricant " + strFabricant + " est introuvable",
+		    		    "Jeu recherché",
+		    		    JOptionPane.PLAIN_MESSAGE);
+	    	}
+
 		}
 
 		if(action == "Reset") {
@@ -432,6 +450,17 @@ public class TP2 extends JFrame implements ActionListener{
 		System.out.println("action" + action);
 		if(action == "Chercher les jeux pour cette console") {
 	    	laBase.chercheConsole(strConsole);
+	    	if(laBase.chercheConsole(strConsole) != null) {
+		    	JOptionPane.showMessageDialog(frame1,
+		    			"Voici le(s) jeu(x) se jouant sur la console " + strConsole + ":\n" + laBase.chercheConsole(strConsole),
+		    		    "Jeu(x) sur une console",
+		    		    JOptionPane.PLAIN_MESSAGE);	    		
+	    	} else {
+		    	JOptionPane.showMessageDialog(frame1,
+		    			"Aucun jeu se jouant sur la console " + strConsole + " n'a ete trouvé",
+		    		    "Jeu(x) sur une console",
+		    		    JOptionPane.PLAIN_MESSAGE);
+	    	}
 		}
 
 		if(action == "Reset") {
@@ -520,7 +549,7 @@ public class TP2 extends JFrame implements ActionListener{
 	}
 	
 	public static void main (String[] args) {
-		new	TP2(300,300);
+		new	TP2(1000,500);
 	}
 	
 	
