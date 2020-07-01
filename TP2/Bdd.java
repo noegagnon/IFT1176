@@ -51,6 +51,7 @@ public class Bdd implements TestInterface{
 			while(it.hasNext()) {
 				Jeu courant = it.next();			
 				if (aTrouver.equals(courant)) {
+					System.out.println(courant);
 					return courant;
 				}
 			}
@@ -60,10 +61,12 @@ public class Bdd implements TestInterface{
 	}
 
 	// Ajoute les donnees du fichier passee en parametre a la banque de donnees
-	public void addBdd(String nomFile){
+	// change pour boolean pour adapte gui
+	public boolean addBdd(String nomFile){
 		FileReader fr = null;
 		boolean existeFile = true;
 		boolean finFichier = false;
+		boolean lecture = true;
 		try {
 			fr = new FileReader(nomFile);
 			if (existeFile) {
@@ -87,16 +90,21 @@ public class Bdd implements TestInterface{
 		} catch (java.io.FileNotFoundException e) {
 			System.out.println("Probleme d'ouvrir le fichier " + nomFile);
 			existeFile = false;
+			lecture = false;
 		} catch(IOException e) {
 			System.out.println("Erreur lors de la lecture du fichier");
-		}	
+			lecture = false;
+		}
+		return lecture;
 	}
 
 	// Charge la banque de donnees a partir du fichier passe en parametre et remplace son contenu s'il y a lieu
-	public void loadBdd(String nomFile){
+	public boolean loadBdd(String nomFile){
 		jeuxVideo = new LinkedHashMap<>();
 		ensemble = new TreeSet<Jeu>();
-		addBdd(nomFile);		
+		//addBdd(nomFile);	
+		System.out.println(jeuxVideo);
+		return addBdd(nomFile);
 	}
 
 	// Retourne le(s) jeu(x) pouvant se jouer sur la console passee en parametre
@@ -111,12 +119,12 @@ public class Bdd implements TestInterface{
 				// System.out.println(jeuCourant.trouveConsole(console));
 				// SSystem.out.println(jeuCourant.getConsoles());
 				if(jeuCourant.trouveConsole(console)) {
-					//System.out.println(jeuCourant);
+					System.out.println(jeuCourant);
 					gameWithConsole.add(jeuCourant);
 				}
 			}				
 		}
-		//System.out.println(gameWithConsole);
+		System.out.println(gameWithConsole);
 		return gameWithConsole;
 
 	}
@@ -135,12 +143,15 @@ public class Bdd implements TestInterface{
 				}
 			}				
 		}
+		System.out.println(jeuxFab);
 		return jeuxFab;
 	}
 
 	// Affiche le(s) jeu(x) portant la cote passee en parametre
-	public void chercheCote(String cote){
+	public Collection<Jeu>  chercheCote(String cote){
 		System.out.println("\nJeu(x) ayant la cote " + cote + ":");
+		Collection<Jeu> jeuxCote = new ArrayList<Jeu>();
+
 		for(Map.Entry<String, TreeSet<Jeu>> entry : jeuxVideo.entrySet()) {
 			//System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
 			Iterator<Jeu> it = entry.getValue().iterator();
@@ -152,10 +163,12 @@ public class Bdd implements TestInterface{
 					//System.out.println(toutesCotes[i]);
 					if(toutesCotes[i].equalsIgnoreCase(cote)) {
 						System.out.println(jeuCourant);
+						jeuxCote.add(jeuCourant);
 					}
 				}
 			}				
-		}			
+		}
+		return jeuxCote;
 	}
 
 	// Enregistre la banque de donnees dans un fichier dont le nom est passe en parametre

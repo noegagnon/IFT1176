@@ -3,6 +3,11 @@ NOM: Gagnon
 PRENOM: Noemie
 */
 
+
+
+
+
+//ajouter dialog saveBdd, shortcut fermer
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -23,6 +28,8 @@ public class TP2 extends JFrame implements ActionListener{
 	private JPanel chercheConsolePanel = new consolePanel();
 	private JPanel getJeuFabPanel = new fabricantPanel();
 	private JPanel chercheCotePanel = new cotePanel();
+	private JPanel appliInfoPanel = new appliPanel();
+
 
 	// menu
 	private TextField tf;
@@ -50,6 +57,10 @@ public class TP2 extends JFrame implements ActionListener{
 	private JMenuItem getJeuFabricant;
 	private JMenuItem chercheCote;
 
+	private JMenu aide;
+	private JMenuItem appliBdd;
+	private JMenuItem fermer;
+
 	
 	TestInterface laBase = new Bdd();
 	Jeu unJeu;	
@@ -69,20 +80,51 @@ public class TP2 extends JFrame implements ActionListener{
 		chercheConsole = new JMenuItem("cherche console");
 		getJeuFabricant = new JMenuItem("get Jeu Fabricant");
 		chercheCote = new JMenuItem("cherche cote");
+		
+		aide = new JMenu("Aide");
+		appliBdd = new JMenuItem("AppliBdd");
+		fermer = new JMenuItem("fermer");
 
-		addJeu.addActionListener(this);
+
+		
+		// raccourcis
+	    KeyStroke keyAddbdd = KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK);
+	    addBdd.setAccelerator(keyAddbdd);
+	    KeyStroke keyJeu = KeyStroke.getKeyStroke(KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK);
+	    getJeu.setAccelerator(keyJeu);
+	    KeyStroke keyConsole = KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_DOWN_MASK);
+	    chercheConsole.setAccelerator(keyConsole);    
+	    KeyStroke keyCote = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK);
+	    chercheCote.setAccelerator(keyCote);    
+	    
+	    // fermer 
+	    KeyStroke keyFermer = KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK);
+	    fermer.setAccelerator(keyFermer); 	  
+	    KeyStroke keyLoad = KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK);
+	    loadBdd.setAccelerator(keyLoad); 
+	    KeyStroke keySave = KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK);
+	    saveBdd.setAccelerator(keySave);	    
+	    KeyStroke keyAddJeu = KeyStroke.getKeyStroke(KeyEvent.VK_T, KeyEvent.CTRL_DOWN_MASK);
+	    addJeu.setAccelerator(keyAddJeu); 
+	    KeyStroke keyFab = KeyStroke.getKeyStroke(KeyEvent.VK_K, KeyEvent.CTRL_DOWN_MASK);
+	    getJeuFabricant.setAccelerator(keyFab); 
+  
+	    
+	    // ajout des sous menus
 		fichier.add(loadBdd);
 		fichier.add(addBdd);
 		fichier.add(saveBdd);
-
 		jeu.add(addJeu);
 		jeu.add(getJeu);
 		jeu.add(chercheConsole);
 		jeu.add(getJeuFabricant);
 		jeu.add(chercheCote);
+		aide.add(appliBdd);
+		aide.add(fermer);
 
 		mb.add(fichier);
 		mb.add(jeu);
+		mb.add(aide);
 		
 		frame1 = new JFrame();
 		
@@ -178,8 +220,19 @@ public class TP2 extends JFrame implements ActionListener{
 
 			}
 		});
+		appliBdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				//frame1.dispose();
+				//new loadBdd();
+                swapPanel(appliInfoPanel);
+				
+			}
+		});
 
 	}
+	
+    // verifier si on peut changer methode pour boolean pour afficher message
+
     public class loadPanel extends JPanel implements ActionListener {{
         //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
@@ -208,15 +261,25 @@ public class TP2 extends JFrame implements ActionListener{
 		System.out.println("action" + action);
 		if(action == "Load bdd") {
 	    	laBase.loadBdd(text);
+	    	if(laBase.loadBdd(text)) {
+		    	JOptionPane.showMessageDialog(frame1,
+		    		    "La banque de donnees a ete creee a partir du fichier " + text,
+		    		    "Creation d'une bdd",
+		    		    JOptionPane.PLAIN_MESSAGE);
+	    	} else {
+		    	JOptionPane.showMessageDialog(frame1,
+		    			"La banque de donnees a partir du fichier " + text + " n'a pas pu etre creee",
+		    		    "Creation d'une bdd",
+		    		    JOptionPane.ERROR_MESSAGE);		
+	    	}
 
-		}
-
-		if(action == "Reset") {
+		} else if(action == "Reset") {
 			bddALoad.setText("");
 		} 	
 	}}
     
-    // la seule qui fonctionne ...
+    // a remodifier p-e
+    // verifier si on peut changer methode pour boolean pour afficher message
     public class savePanel extends JPanel implements ActionListener {{
         //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
@@ -246,13 +309,12 @@ public class TP2 extends JFrame implements ActionListener{
 		System.out.println("action" + action);
 		if(action == "Save bdd") {
 	    	laBase.saveBdd(text);
-		}
-
-		if(action == "Reset") {
+		} else if(action == "Reset") {
 			tf.setText("");
 		} 	
 	}}
-    
+    // a remodifier p-e
+    // verifier si on peut changer methode pour boolean pour afficher message
     public class addPanel extends JPanel implements ActionListener {{
         //this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
@@ -281,9 +343,18 @@ public class TP2 extends JFrame implements ActionListener{
 		System.out.println("action" + action);
 		if(action == "Add bdd") {
 	    	laBase.addBdd(strFichier);
-		}
-
-		if(action == "Reset") {
+	    	if(laBase.addBdd(strFichier)) {
+		    	JOptionPane.showMessageDialog(frame1,
+		    		    "Le fichier " + strFichier + " a ete ajoute a la banque de donnees ",
+		    		    "Ajout d'une bdd",
+		    		    JOptionPane.PLAIN_MESSAGE);
+	    	} else {
+		    	JOptionPane.showMessageDialog(frame1,
+		    		    "Le fichier " + strFichier + " n'a pas pu etre ajoute a la banque de donnees",
+		    		    "Ajout d'une bdd",
+		    		    JOptionPane.ERROR_MESSAGE);		
+	    	}
+		} else if(action == "Reset") {
 			bddAAdd.setText("");
 		} 	
 	}}
@@ -351,9 +422,7 @@ public class TP2 extends JFrame implements ActionListener{
 	    		    "Le jeu " + strTitreAAjouter + " du fabricant " + strFabAAjouter + " ayant une cote " + strCoteAAjouter + " a bien ete ajoute a la banque de donnees",
 	    		    "Ajout d'un jeu",
 	    		    JOptionPane.PLAIN_MESSAGE);
-		}
-
-		if(action == "Reset") {
+		} else if(action == "Reset") {
 			titreAAjouter.setText("");
 			fabricantAAjouter.setText("");
 			coteAAjouter.setText("");
@@ -410,12 +479,10 @@ public class TP2 extends JFrame implements ActionListener{
 		    	JOptionPane.showMessageDialog(frame1,
 		    			"Le jeu " + strTitre + "du fabricant " + strFabricant + " est introuvable",
 		    		    "Jeu recherché",
-		    		    JOptionPane.PLAIN_MESSAGE);
+		    		    JOptionPane.WARNING_MESSAGE);
 	    	}
 
-		}
-
-		if(action == "Reset") {
+		} else if(action == "Reset") {
 			titre.setText("");
 			fabricant.setText("");
 		} 	
@@ -450,7 +517,7 @@ public class TP2 extends JFrame implements ActionListener{
 		System.out.println("action" + action);
 		if(action == "Chercher les jeux pour cette console") {
 	    	laBase.chercheConsole(strConsole);
-	    	if(laBase.chercheConsole(strConsole) != null) {
+	    	if(laBase.chercheConsole(strConsole).size() != 0) {
 		    	JOptionPane.showMessageDialog(frame1,
 		    			"Voici le(s) jeu(x) se jouant sur la console " + strConsole + ":\n" + laBase.chercheConsole(strConsole),
 		    		    "Jeu(x) sur une console",
@@ -459,11 +526,9 @@ public class TP2 extends JFrame implements ActionListener{
 		    	JOptionPane.showMessageDialog(frame1,
 		    			"Aucun jeu se jouant sur la console " + strConsole + " n'a ete trouvé",
 		    		    "Jeu(x) sur une console",
-		    		    JOptionPane.PLAIN_MESSAGE);
+		    		    JOptionPane.WARNING_MESSAGE);
 	    	}
-		}
-
-		if(action == "Reset") {
+		} else if(action == "Reset") {
 			console.setText("");
 		} 	
 	}}
@@ -496,9 +561,18 @@ public class TP2 extends JFrame implements ActionListener{
 		System.out.println("action" + action);
 		if(action == "Chercher les jeux de ce fabricant") {
 	    	laBase.getJeuxFabricant(strFabricant);
-		}
-
-		if(action == "Reset") {
+	    	if(laBase.getJeuxFabricant(strFabricant).size() != 0) {
+		    	JOptionPane.showMessageDialog(frame1,
+		    			"Voici le(s) jeu(x) du fabricant " + strFabricant + ":\n" + laBase.getJeuxFabricant(strFabricant),
+		    		    "Jeu(x) sur une console",
+		    		    JOptionPane.PLAIN_MESSAGE);	    		
+	    	} else {
+		    	JOptionPane.showMessageDialog(frame1,
+		    			"Aucun jeu du fabricant " + strFabricant + " n'a ete trouvé",
+		    		    "Jeu(x) sur une console",
+		    		    JOptionPane.WARNING_MESSAGE);
+	    	}
+		} else if(action == "Reset") {
 			fab.setText("");
 		} 	
 	}}
@@ -530,22 +604,60 @@ public class TP2 extends JFrame implements ActionListener{
 		System.out.println(strCote);
 		System.out.println("action" + action);
 		if(action == "Chercher les jeux avec cette cote") {
-	    	laBase.chercheCote(strCote);
-		}
-
-		if(action == "Reset") {
+	    	laBase.chercheCote(strCote);	    	
+	    	if(laBase.chercheCote(strCote).size() != 0) {
+		    	JOptionPane.showMessageDialog(frame1,
+		    			"Voici le(s) jeu(x) avec la cote " + strCote + ":\n" + laBase.chercheCote(strCote),
+		    		    "Jeu(x) sur une console",
+		    		    JOptionPane.PLAIN_MESSAGE);	    		
+	    	} else {
+		    	JOptionPane.showMessageDialog(frame1,
+		    			"Aucun jeu ayant la cote " + strCote + " n'a ete trouvé",
+		    		    "Jeu(x) avec une certaine cote",
+		    		    JOptionPane.WARNING_MESSAGE);
+	    	}
+		} else if (action == "Reset") {
 			cote.setText("");
 		} 	
 	}}
     
-	public static void afficherJeu(TestInterface b, String fab, String titre ) 			
+    public class appliPanel extends JPanel{{
+        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    	/*
+		this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		this.setLayout(new GridLayout(2,1));
+		JLabel version = new JLabel("Version : 1.0\n");
+		JLabel conceptrice = new JLabel("Conceptrice: Noemie Gagnon");
+
+		this.add(version);
+		this.add(conceptrice);
+*/
+		JLabel version = new JLabel("Version : 1.0\n");
+		JLabel conceptrice = new JLabel("Conceptrice: Noemie Gagnon");
+        this.setLayout(new GridBagLayout());
+        this.add(version);
+        this.add(conceptrice);
+
+        this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+    }}
+    
+	public void afficherJeu(TestInterface b, String fab, String titre ) 			
 	throws IOException 
 	{
 		Jeu aAfficher = b.getJeu(titre, fab);
-		if( aAfficher != null)
-			System.out.println("aAfficher " + aAfficher);
-		else
-			System.out.println(titre + " n'est pas dans la banque de donnees");
+		if( aAfficher != null) {
+	    	JOptionPane.showMessageDialog(frame1,
+	    			"Jeu a affichier: \n" + aAfficher,
+	    		    "Affichage d'un jeu",
+	    		    JOptionPane.PLAIN_MESSAGE); 
+		} else {
+	    	JOptionPane.showMessageDialog(frame1,
+	    			"Le jeu " + titre + " du fabricant " + fab + "n'est pas dans la banque de donnees",
+	    		    "Affichage d'un jeu",
+	    		    JOptionPane.PLAIN_MESSAGE); 
+			
+		}
 	}
 	
 	public static void main (String[] args) {

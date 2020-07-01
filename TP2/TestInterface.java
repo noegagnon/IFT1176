@@ -19,17 +19,15 @@ public interface TestInterface {
 
 	public Jeu getJeu(String titre, String fabricant);
 
-	public void addBdd(String nomFile);
+	public boolean addBdd(String nomFile);
 
-	public void loadBdd(String nomFile);
+	public boolean loadBdd(String nomFile);
 
 	public ArrayList<Jeu> chercheConsole(String console);
 
 	public Collection<Jeu> getJeuxFabricant(String fabricant);
 
-	// etait pas la...
-	public void chercheCote(String cote);
-
+	public Collection<Jeu> chercheCote(String cote);
 
 	public void saveBdd(String nomFichier);
 
