@@ -86,7 +86,7 @@ public class Jeu implements Comparable<Jeu>
     }
 
     public Boolean trouveConsole(String uneConsole){
-        return consoles.contains(uneConsole);
+        return consoles.contains(uneConsole.toUpperCase());
     }
 
     public LinkedHashSet<String> getConsoles()

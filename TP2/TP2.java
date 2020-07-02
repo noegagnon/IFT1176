@@ -65,21 +65,19 @@ public class TP2 extends JFrame{
 
 		// Menu
 		JMenuBar mb = new JMenuBar();
-		fichier = new JMenu("fichier");
-		loadBdd = new JMenuItem("load bdd");
-		addBdd = new JMenuItem("add bdd");
-		saveBdd = new JMenuItem("save bdd");
-
-		jeu = new JMenu("jeu");
-		addJeu = new JMenuItem("add Jeu");
-		getJeu = new JMenuItem("get Jeu");
-		chercheConsole = new JMenuItem("cherche console");
-		getJeuFabricant = new JMenuItem("get Jeu Fabricant");
-		chercheCote = new JMenuItem("cherche cote");
-		
+		fichier = new JMenu("Fichier");
+		loadBdd = new JMenuItem("Charger une banque de donnees");
+		addBdd = new JMenuItem("Ajouter une banque de donnees");
+		saveBdd = new JMenuItem("Sauvegarder une banque de donnees");
+		jeu = new JMenu("Jeu");
+		addJeu = new JMenuItem("Ajouter un jeu");
+		getJeu = new JMenuItem("Trouver un jeu");
+		chercheConsole = new JMenuItem("Trouver les jeux par console");
+		getJeuFabricant = new JMenuItem("Trouver les jeux par fabricant");
+		chercheCote = new JMenuItem("Trouver les jeux par cote");
 		aide = new JMenu("Aide");
 		appliBdd = new JMenuItem("AppliBdd");
-		fermer = new JMenuItem("fermer");
+		fermer = new JMenuItem("Fermer");
 		
 		// raccourcis
 	    KeyStroke keyAddbdd = KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK);
@@ -121,11 +119,12 @@ public class TP2 extends JFrame{
 		mb.add(aide);
 				
 		// Boutons
-		JButton buttonLoad = new JButton("Load bdd");
-		JButton buttonReset = new JButton("Reset");
 		/*
+		JButton buttonLoad = new JButton("Load bdd");
+		JButton buttonEffacer = new JButton("Effacer");
+		
 		buttonLoad.addActionListener(this);
-		buttonReset.addActionListener(this);
+		buttonEffacer.addActionListener(this);
 			*/
 		currentPanel = new JPanel();
 		currentPanel.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
@@ -137,7 +136,6 @@ public class TP2 extends JFrame{
 		frame1.setTitle("Gestion d'une banque de donnees de jeux videos");
 		frame1.setSize(l, h);
 		frame1.setLocationRelativeTo(null);
-		//frame1.pack();
 		frame1.setVisible(true);
 		frame1.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
@@ -147,7 +145,7 @@ public class TP2 extends JFrame{
 				
 			}
 		});
-
+		
 		frame1.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		saveBdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -210,29 +208,26 @@ public class TP2 extends JFrame{
         //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
 
-		JButton buttonLoad = new JButton("Load bdd");
-		JButton buttonReset = new JButton("Reset");
+		JButton buttonLoad = new JButton("Charger la bdd");
+		JButton buttonEffacer = new JButton("Effacer");
 		buttonLoad.addActionListener(this);
-		buttonReset.addActionListener(this);
+		buttonEffacer.addActionListener(this);
 		JLabel demandeFichier = new JLabel("Veuillez entrez le nom du fichier a charger");
 
-		bddALoad = new TextField(50);
-		this.add(buttonLoad);
-		this.add(buttonReset);
+		//bddALoad = new TextField(50);
 		this.add(demandeFichier);
-		this.add(bddALoad);
+		this.add(bddALoad = new TextField(50));
+		this.add(buttonLoad);
+		this.add(buttonEffacer);
     }
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-		// tf.getText() ca fait rien, donc fonctionne pas.
+	public void actionPerformed(ActionEvent e) {		
 		String text = bddALoad.getText();
 		String action = e.getActionCommand();
 		System.out.println(text);
 		System.out.println("action" + action);
-		if(action == "Load bdd") {
+		if(action == "Charger la bdd") {
 	    	laBase.loadBdd(text);
 	    	if(laBase.loadBdd(text)) {
 		    	JOptionPane.showMessageDialog(frame1,
@@ -246,7 +241,7 @@ public class TP2 extends JFrame{
 		    		    JOptionPane.ERROR_MESSAGE);		
 	    	}
 
-		} else if(action == "Reset") {
+		} else if(action == "Effacer") {
 			bddALoad.setText("");
 		} 	
 	}}
@@ -256,43 +251,40 @@ public class TP2 extends JFrame{
         //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
 
-		JButton buttonSave = new JButton("Save bdd");
-		JButton buttonReset = new JButton("Reset");
+		JButton buttonSave = new JButton("Sauvegarder la bdd");
+		JButton buttonEffacer = new JButton("Effacer");
 		buttonSave.addActionListener(this);
-		buttonReset.addActionListener(this);
+		buttonEffacer.addActionListener(this);
 		JLabel demandeFichier = new JLabel("Veuillez entrez le nom du fichier dans lequel sauvegarder la banque de donnees");
 
 		
 		tf = new TextField(50);
-		this.add(buttonSave);
-		this.add(buttonReset);
 		this.add(demandeFichier);
 		this.add(tf);
+		this.add(buttonSave);
+		this.add(buttonEffacer);
     }
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-		// tf.getText() ca fait rien, donc fonctionne pas.
-		String text = tf.getText();
+		String strToSave = tf.getText();
 		String action = e.getActionCommand();
-		System.out.println(text);
+		System.out.println(strToSave);
 		System.out.println("action" + action);
-		if(action == "Save bdd") {
-	    	laBase.saveBdd(text);
-	    	if(laBase.saveBdd(text)) {
+		if(action == "Sauvegarder la bdd") {
+	    	laBase.saveBdd(strToSave);
+	    	if(laBase.saveBdd(strToSave)) {
 		    	JOptionPane.showMessageDialog(frame1,
-		    		    "La banque de donnees a ete sauvegardee sur le fichier " + text,
+		    		    "La banque de donnees a ete sauvegardee sur le fichier " + strToSave,
 		    		    "Sauvegarde d'une bdd",
 		    		    JOptionPane.PLAIN_MESSAGE);
 	    	} else {
 		    	JOptionPane.showMessageDialog(frame1,
-		    			"La banque de donnees a partir du fichier n'a pas pu etre sauvegardee sur le fichier " + text ,
+		    			"La banque de donnees a partir du fichier n'a pas pu etre sauvegardee sur le fichier " + strToSave ,
 		    		    "Sauvegarde d'une bdd",
 		    		    JOptionPane.ERROR_MESSAGE);		
 	    	}
-		} else if(action == "Reset") {
+		} else if(action == "Effacer") {
 			tf.setText("");
 		} 	
 	}}
@@ -302,17 +294,17 @@ public class TP2 extends JFrame{
         //this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
 
-		JButton buttonAdd = new JButton("Add bdd");
-		JButton buttonReset = new JButton("Reset");
+		JButton buttonAdd = new JButton("Ajouter la bdd");
+		JButton buttonEffacer = new JButton("Effacer");
 		buttonAdd.addActionListener(this);
-		buttonReset.addActionListener(this);
+		buttonEffacer.addActionListener(this);
 		
 		JLabel demandeFichier = new JLabel("Veuillez entrez le nom du fichier a ajouter a la banque de donnees");
 		bddAAdd = new TextField(50);
-		this.add(buttonAdd);
-		this.add(buttonReset);
 		this.add(demandeFichier);
 		this.add(bddAAdd);
+		this.add(buttonAdd);
+		this.add(buttonEffacer);
     }
 
 	@Override
@@ -321,7 +313,7 @@ public class TP2 extends JFrame{
 		String action = e.getActionCommand();
 		System.out.println(strFichier);
 		System.out.println("action" + action);
-		if(action == "Add bdd") {
+		if(action == "Ajouter la bdd") {
 	    	laBase.addBdd(strFichier);
 	    	if(laBase.addBdd(strFichier)) {
 		    	JOptionPane.showMessageDialog(frame1,
@@ -334,33 +326,21 @@ public class TP2 extends JFrame{
 		    		    "Ajout d'une bdd",
 		    		    JOptionPane.ERROR_MESSAGE);		
 	    	}
-		} else if(action == "Reset") {
+		} else if(action == "Effacer") {
 			bddAAdd.setText("");
 		} 	
 	}}
 
-    protected void swapPanel(JPanel newPanel) {
-        SwingUtilities.invokeLater(new Runnable() {   	
-            @Override
-            public void run() {
-                frame1.remove(currentPanel);
-                frame1.add(newPanel);
-                currentPanel = newPanel;
-                frame1.invalidate();
-                frame1.revalidate();
-            }
-        });
-    }
     
     // Ajout d'un jeu a la banque de donnees
     public class addJeuPanel extends JPanel implements ActionListener {{
         //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
 
-		JButton buttonAddJeu = new JButton("addJeu bdd");
-		JButton buttonReset = new JButton("Reset");
+		JButton buttonAddJeu = new JButton("Ajouter jeu");
+		JButton buttonEffacer = new JButton("Effacer");
 		buttonAddJeu.addActionListener(this);
-		buttonReset.addActionListener(this);
+		buttonEffacer.addActionListener(this);
 		JLabel ajouterTitre = new JLabel("Veuillez entrez le titre du jeu a ajouter");
 		JLabel ajouterFabricant = new JLabel("Veuillez entrez le fabricant du jeu a ajouter");
 		JLabel ajouterCote = new JLabel("Veuillez entrez la cote du jeu a ajouter");
@@ -369,15 +349,14 @@ public class TP2 extends JFrame{
 		fabricantAAjouter = new TextField(50);
 		coteAAjouter = new TextField(50);
 		
-		this.add(buttonAddJeu);
-		this.add(buttonReset);
 		this.add(ajouterTitre);
 		this.add(titreAAjouter);
 		this.add(ajouterFabricant);
 		this.add(fabricantAAjouter);
 		this.add(ajouterCote);
 		this.add(coteAAjouter);
-
+		this.add(buttonAddJeu);
+		this.add(buttonEffacer);
     }
 
 	@Override
@@ -391,14 +370,14 @@ public class TP2 extends JFrame{
 		System.out.println(fabricantAAjouter);
 
 		System.out.println("action" + action);
-		if(action == "addJeu bdd") {
+		if(action == "Ajouter jeu") {
 	    	unJeu = new Jeu(strFabAAjouter, strTitreAAjouter, strCoteAAjouter);
 	    	laBase.addJeu(unJeu);
 	    	JOptionPane.showMessageDialog(frame1,
 	    		    "Le jeu " + strTitreAAjouter + " du fabricant " + strFabAAjouter + " ayant une cote " + strCoteAAjouter + " a bien ete ajoute a la banque de donnees",
 	    		    "Ajout d'un jeu",
 	    		    JOptionPane.PLAIN_MESSAGE);
-		} else if(action == "Reset") {
+		} else if(action == "Effacer") {
 			titreAAjouter.setText("");
 			fabricantAAjouter.setText("");
 			coteAAjouter.setText("");
@@ -409,36 +388,35 @@ public class TP2 extends JFrame{
     public class getJeuPanel extends JPanel implements ActionListener {{
         //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
-		JButton buttonGetJeu = new JButton("getJeu bdd");
-		JButton buttonReset = new JButton("Reset");
+		JButton buttonGetJeu = new JButton("Trouver le jeu");
+		JButton buttonEffacer = new JButton("Effacer");
 		buttonGetJeu.addActionListener(this);
-		buttonReset.addActionListener(this);
+		buttonEffacer.addActionListener(this);
 		JLabel titreAEcrire = new JLabel("Veuillez entrez le titre du jeu recherche");
 		JLabel fabricantAEcrire = new JLabel("Veuillez entrez le fabricant du jeu recherche");
 		JLabel reponse = new JLabel();
 	
 		titre = new TextField(50);
 		fabricant = new TextField(50);
-		this.add(buttonGetJeu);
-		this.add(buttonReset);
 		this.add(titreAEcrire);
 		this.add(titre);
 		this.add(fabricantAEcrire);
 		this.add(fabricant);
 		this.add(reponse);
+		this.add(buttonGetJeu);
+		this.add(buttonEffacer);
     }
 
 	@Override
 	public void actionPerformed(ActionEvent e) {		
 		String strTitre = titre.getText();
-		String strFabricant = fabricant.getText();
-		
+		String strFabricant = fabricant.getText();	
 		String action = e.getActionCommand();
 		System.out.println(titre);
 		System.out.println(fabricant);
 
 		System.out.println("action" + action);
-		if(action == "getJeu bdd") {
+		if(action == "Trouver le jeu") {
 	    	laBase.getJeu(strTitre, strFabricant);
 	    	if(laBase.getJeu(strTitre, strFabricant) != null) {
 		    	JOptionPane.showMessageDialog(frame1,
@@ -452,7 +430,7 @@ public class TP2 extends JFrame{
 		    		    JOptionPane.WARNING_MESSAGE);
 	    	}
 
-		} else if(action == "Reset") {
+		} else if(action == "Effacer") {
 			titre.setText("");
 			fabricant.setText("");
 		} 	
@@ -460,20 +438,19 @@ public class TP2 extends JFrame{
     
     // Affichage des jeux faisant partie de la banque de donnees se jouant sur une console voulue
     public class consolePanel extends JPanel implements ActionListener {{
-        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
 
 		JButton buttonConsole = new JButton("Chercher les jeux pour cette console");
-		JButton buttonReset = new JButton("Reset");
+		JButton buttonEffacer = new JButton("Effacer");
 		buttonConsole.addActionListener(this);
-		buttonReset.addActionListener(this);
+		buttonEffacer.addActionListener(this);
 		JLabel consoleAEcrire = new JLabel("Veuillez entrez une console");
 
 		console = new TextField(50);
-		this.add(buttonConsole);
-		this.add(buttonReset);
 		this.add(consoleAEcrire);
 		this.add(console);
+		this.add(buttonConsole);
+		this.add(buttonEffacer);
     }
 
 	@Override
@@ -495,27 +472,26 @@ public class TP2 extends JFrame{
 		    		    "Jeu(x) sur une console",
 		    		    JOptionPane.WARNING_MESSAGE);
 	    	}
-		} else if(action == "Reset") {
+		} else if(action == "Effacer") {
 			console.setText("");
 		} 	
 	}}
     
     // Affichage des jeux faisant partie de la banque de donnees provenant d'un fabricant voulu
     public class fabricantPanel extends JPanel implements ActionListener {{
-        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
 
 		JButton buttonFabricant = new JButton("Chercher les jeux de ce fabricant");
-		JButton buttonReset = new JButton("Reset");
+		JButton buttonEffacer = new JButton("Effacer");
 		buttonFabricant.addActionListener(this);
-		buttonReset.addActionListener(this);
+		buttonEffacer.addActionListener(this);
 		JLabel fabricantAEcrire = new JLabel("Veuillez entrez un fabricant");
 
 		fab = new TextField(50);
-		this.add(buttonFabricant);
-		this.add(buttonReset);
 		this.add(fabricantAEcrire);
 		this.add(fab);
+		this.add(buttonFabricant);
+		this.add(buttonEffacer);
     }
 
 	@Override
@@ -537,27 +513,25 @@ public class TP2 extends JFrame{
 		    		    "Jeu(x) sur une console",
 		    		    JOptionPane.WARNING_MESSAGE);
 	    	}
-		} else if(action == "Reset") {
+		} else if(action == "Effacer") {
 			fab.setText("");
 		} 	
 	}}
     
     // Affichage des jeux faisant partie de la banque de donnees ayant une cote voulue
     public class cotePanel extends JPanel implements ActionListener {{
-        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
-
 		JButton buttonCote = new JButton("Chercher les jeux avec cette cote");
-		JButton buttonReset = new JButton("Reset");
+		JButton buttonEffacer = new JButton("Effacer");
 		buttonCote.addActionListener(this);
-		buttonReset.addActionListener(this);
+		buttonEffacer.addActionListener(this);
 		JLabel coteAEcrire = new JLabel("Veuillez entrez une cote");
 
 		cote = new TextField(50);
-		this.add(buttonCote);
-		this.add(buttonReset);
 		this.add(coteAEcrire);
 		this.add(cote);
+		this.add(buttonCote);
+		this.add(buttonEffacer);
     }
 
 	@Override
@@ -579,30 +553,32 @@ public class TP2 extends JFrame{
 		    		    "Jeu(x) avec une certaine cote",
 		    		    JOptionPane.WARNING_MESSAGE);
 	    	}
-		} else if (action == "Reset") {
+		} else if (action == "Effacer") {
 			cote.setText("");
 		} 	
 	}}
     
     // Information sur l'application
     public class appliPanel extends JPanel{{
-        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-    	/*
-		this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-		this.setLayout(new GridLayout(2,1));
-		JLabel version = new JLabel("Version : 1.0\n");
-		JLabel conceptrice = new JLabel("Conceptrice: Noemie Gagnon");
-
-*/
-		JLabel version = new JLabel("Version : 1.0\n");
-		JLabel conceptrice = new JLabel("Conceptrice: Noemie Gagnon");
-        this.setLayout(new GridBagLayout());
-        this.add(version);
-        this.add(conceptrice);
-
-        this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
+        this.setLayout(new GridLayout(4,1));
+        this.add(new JLabel("Version : 1.0", JLabel.CENTER));
+        this.add(new JLabel("Conceptrice: Noemie Gagnon", JLabel.CENTER));
+        this.add(new JLabel("Copyright: blabla", JLabel.CENTER));
+        this.setBorder(BorderFactory.createEmptyBorder(150, 150, 150, 150));
     }}
+    
+    protected void swapPanel(JPanel newPanel) {
+        SwingUtilities.invokeLater(new Runnable() {   	
+            @Override
+            public void run() {
+                frame1.remove(currentPanel);
+                frame1.add(newPanel);
+                currentPanel = newPanel;
+                frame1.invalidate();
+                frame1.revalidate();
+            }
+        });
+    }
     
     // Afficher un jeu 
 	public void afficherJeu(TestInterface b, String fab, String titre ) 			
@@ -624,7 +600,7 @@ public class TP2 extends JFrame{
 	}
 	
 	public static void main (String[] args) {
-		new	TP2(1000,500);
+		new	TP2(600,500);
 	}
 	
 	/*
