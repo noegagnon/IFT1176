@@ -4,9 +4,6 @@ PRENOM: Noemie
 */
 
 
-
-
-
 //ajouter dialog saveBdd, shortcut fermer
 import java.awt.*;
 import java.awt.event.*;
@@ -14,7 +11,7 @@ import javax.swing.*;
 import java.util.*;
 import java.io.*;
 
-public class TP2 extends JFrame implements ActionListener{
+public class TP2 extends JFrame{
 
 	private JFrame frame1;
 
@@ -31,7 +28,7 @@ public class TP2 extends JFrame implements ActionListener{
 	private JPanel appliInfoPanel = new appliPanel();
 
 
-	// menu
+	// Messages pour chaque panel
 	private TextField tf;
 	private TextField bddAAdd;
 	private TextField bddALoad;
@@ -44,30 +41,29 @@ public class TP2 extends JFrame implements ActionListener{
 	private TextField fab;
 	private TextField cote;
 
-	
+	// Menu
 	private JMenu fichier;
 	private JMenuItem loadBdd;
 	private JMenuItem addBdd;
 	private JMenuItem saveBdd;
-
 	private JMenu jeu;
 	private JMenuItem addJeu;
 	private JMenuItem getJeu;
 	private JMenuItem chercheConsole;
 	private JMenuItem getJeuFabricant;
 	private JMenuItem chercheCote;
-
 	private JMenu aide;
 	private JMenuItem appliBdd;
 	private JMenuItem fermer;
 
-	
 	TestInterface laBase = new Bdd();
 	Jeu unJeu;	
 
 	public TP2(int l, int h){
 		
-		//menu
+		frame1 = new JFrame();
+
+		// Menu
 		JMenuBar mb = new JMenuBar();
 		fichier = new JMenu("fichier");
 		loadBdd = new JMenuItem("load bdd");
@@ -84,8 +80,6 @@ public class TP2 extends JFrame implements ActionListener{
 		aide = new JMenu("Aide");
 		appliBdd = new JMenuItem("AppliBdd");
 		fermer = new JMenuItem("fermer");
-
-
 		
 		// raccourcis
 	    KeyStroke keyAddbdd = KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK);
@@ -97,7 +91,7 @@ public class TP2 extends JFrame implements ActionListener{
 	    KeyStroke keyCote = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK);
 	    chercheCote.setAccelerator(keyCote);    
 	    
-	    // fermer 
+	    // fermer  ????????
 	    KeyStroke keyFermer = KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK);
 	    fermer.setAccelerator(keyFermer); 	  
 	    KeyStroke keyLoad = KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK);
@@ -109,7 +103,6 @@ public class TP2 extends JFrame implements ActionListener{
 	    KeyStroke keyFab = KeyStroke.getKeyStroke(KeyEvent.VK_K, KeyEvent.CTRL_DOWN_MASK);
 	    getJeuFabricant.setAccelerator(keyFab); 
   
-	    
 	    // ajout des sous menus
 		fichier.add(loadBdd);
 		fichier.add(addBdd);
@@ -122,18 +115,18 @@ public class TP2 extends JFrame implements ActionListener{
 		aide.add(appliBdd);
 		aide.add(fermer);
 
+		// Ajout des elements du menu a la banque de donnees
 		mb.add(fichier);
 		mb.add(jeu);
 		mb.add(aide);
-		
-		frame1 = new JFrame();
-		
-		// boutons
+				
+		// Boutons
 		JButton buttonLoad = new JButton("Load bdd");
 		JButton buttonReset = new JButton("Reset");
+		/*
 		buttonLoad.addActionListener(this);
 		buttonReset.addActionListener(this);
-			
+			*/
 		currentPanel = new JPanel();
 		currentPanel.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
 		currentPanel.add(new JLabel("Veuillez choisir une option dans la barre de menu."));
@@ -150,8 +143,6 @@ public class TP2 extends JFrame implements ActionListener{
 		
 		loadBdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				//frame1.dispose();
-				//new loadBdd();
                 swapPanel(loadBddPanel);
 				
 			}
@@ -177,18 +168,13 @@ public class TP2 extends JFrame implements ActionListener{
 
 		addJeu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				//frame1.dispose();
-				//new addBdd();
 				swapPanel(addJeuPanel);
-
 			}
 		});
 		
 		
 		getJeu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				//frame1.dispose();
-				//new addBdd();
 				swapPanel(getJeuPanel);
 
 			}
@@ -196,43 +182,30 @@ public class TP2 extends JFrame implements ActionListener{
 		
 		chercheConsole.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				//frame1.dispose();
-				//new addBdd();
 				swapPanel(chercheConsolePanel);
-
 			}
 		});
 		
 		getJeuFabricant.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				//frame1.dispose();
-				//new addBdd();
 				swapPanel(getJeuFabPanel);
-
 			}
 		});
 		
 		chercheCote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				//frame1.dispose();
-				//new addBdd();
 				swapPanel(chercheCotePanel);
 
 			}
 		});
 		appliBdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				//frame1.dispose();
-				//new loadBdd();
                 swapPanel(appliInfoPanel);
-				
 			}
 		});
-
 	}
 	
-    // verifier si on peut changer methode pour boolean pour afficher message
-
+	// Chargement d'un fichier dans la banque de donnees
     public class loadPanel extends JPanel implements ActionListener {{
         //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
@@ -241,7 +214,7 @@ public class TP2 extends JFrame implements ActionListener{
 		JButton buttonReset = new JButton("Reset");
 		buttonLoad.addActionListener(this);
 		buttonReset.addActionListener(this);
-		JLabel demandeFichier = new JLabel("Veuillez entrez le nom du fichier (.txt) a charger");
+		JLabel demandeFichier = new JLabel("Veuillez entrez le nom du fichier a charger");
 
 		bddALoad = new TextField(50);
 		this.add(buttonLoad);
@@ -278,8 +251,7 @@ public class TP2 extends JFrame implements ActionListener{
 		} 	
 	}}
     
-    // a remodifier p-e
-    // verifier si on peut changer methode pour boolean pour afficher message
+    // Sauvegarde de la banque de donnees dans un fichier
     public class savePanel extends JPanel implements ActionListener {{
         //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
@@ -309,12 +281,23 @@ public class TP2 extends JFrame implements ActionListener{
 		System.out.println("action" + action);
 		if(action == "Save bdd") {
 	    	laBase.saveBdd(text);
+	    	if(laBase.saveBdd(text)) {
+		    	JOptionPane.showMessageDialog(frame1,
+		    		    "La banque de donnees a ete sauvegardee sur le fichier " + text,
+		    		    "Sauvegarde d'une bdd",
+		    		    JOptionPane.PLAIN_MESSAGE);
+	    	} else {
+		    	JOptionPane.showMessageDialog(frame1,
+		    			"La banque de donnees a partir du fichier n'a pas pu etre sauvegardee sur le fichier " + text ,
+		    		    "Sauvegarde d'une bdd",
+		    		    JOptionPane.ERROR_MESSAGE);		
+	    	}
 		} else if(action == "Reset") {
 			tf.setText("");
 		} 	
 	}}
-    // a remodifier p-e
-    // verifier si on peut changer methode pour boolean pour afficher message
+    
+    // Ajout d'un fichier a la banque de donnees
     public class addPanel extends JPanel implements ActionListener {{
         //this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
@@ -333,10 +316,7 @@ public class TP2 extends JFrame implements ActionListener{
     }
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-		// tf.getText() ca fait rien, donc fonctionne pas.
+	public void actionPerformed(ActionEvent e) {		
 		String strFichier = bddAAdd.getText();
 		String action = e.getActionCommand();
 		System.out.println(strFichier);
@@ -371,9 +351,8 @@ public class TP2 extends JFrame implements ActionListener{
             }
         });
     }
-
     
-    // add Jeu
+    // Ajout d'un jeu a la banque de donnees
     public class addJeuPanel extends JPanel implements ActionListener {{
         //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
@@ -402,13 +381,10 @@ public class TP2 extends JFrame implements ActionListener{
     }
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void actionPerformed(ActionEvent e) {		
 		String strTitreAAjouter = titreAAjouter.getText();
 		String strFabAAjouter = fabricantAAjouter.getText();
-		String strCoteAAjouter = coteAAjouter.getText();
-		
+		String strCoteAAjouter = coteAAjouter.getText();	
 		
 		String action = e.getActionCommand();
 		System.out.println(titreAAjouter);
@@ -426,11 +402,10 @@ public class TP2 extends JFrame implements ActionListener{
 			titreAAjouter.setText("");
 			fabricantAAjouter.setText("");
 			coteAAjouter.setText("");
-			
 		} 	
 	}}
     
-    // get Jeu
+    // Affichage d'un jeu de la banque de donnees
     public class getJeuPanel extends JPanel implements ActionListener {{
         //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
@@ -441,8 +416,7 @@ public class TP2 extends JFrame implements ActionListener{
 		JLabel titreAEcrire = new JLabel("Veuillez entrez le titre du jeu recherche");
 		JLabel fabricantAEcrire = new JLabel("Veuillez entrez le fabricant du jeu recherche");
 		JLabel reponse = new JLabel();
-
-		
+	
 		titre = new TextField(50);
 		fabricant = new TextField(50);
 		this.add(buttonGetJeu);
@@ -452,14 +426,10 @@ public class TP2 extends JFrame implements ActionListener{
 		this.add(fabricantAEcrire);
 		this.add(fabricant);
 		this.add(reponse);
-
     }
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-		// tf.getText() ca fait rien, donc fonctionne pas.
+	public void actionPerformed(ActionEvent e) {		
 		String strTitre = titre.getText();
 		String strFabricant = fabricant.getText();
 		
@@ -488,7 +458,7 @@ public class TP2 extends JFrame implements ActionListener{
 		} 	
 	}}
     
-    
+    // Affichage des jeux faisant partie de la banque de donnees se jouant sur une console voulue
     public class consolePanel extends JPanel implements ActionListener {{
         //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
@@ -508,9 +478,6 @@ public class TP2 extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-		// tf.getText() ca fait rien, donc fonctionne pas.
 		String strConsole = console.getText();
 		String action = e.getActionCommand();
 		System.out.println(strConsole);
@@ -533,6 +500,7 @@ public class TP2 extends JFrame implements ActionListener{
 		} 	
 	}}
     
+    // Affichage des jeux faisant partie de la banque de donnees provenant d'un fabricant voulu
     public class fabricantPanel extends JPanel implements ActionListener {{
         //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
@@ -552,9 +520,6 @@ public class TP2 extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-		// tf.getText() ca fait rien, donc fonctionne pas.
 		String strFabricant = fab.getText();
 		String action = e.getActionCommand();
 		System.out.println(strFabricant);
@@ -577,6 +542,7 @@ public class TP2 extends JFrame implements ActionListener{
 		} 	
 	}}
     
+    // Affichage des jeux faisant partie de la banque de donnees ayant une cote voulue
     public class cotePanel extends JPanel implements ActionListener {{
         //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
@@ -596,9 +562,6 @@ public class TP2 extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-		// tf.getText() ca fait rien, donc fonctionne pas.
 		String strCote = cote.getText();
 		String action = e.getActionCommand();
 		System.out.println(strCote);
@@ -621,6 +584,7 @@ public class TP2 extends JFrame implements ActionListener{
 		} 	
 	}}
     
+    // Information sur l'application
     public class appliPanel extends JPanel{{
         //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     	/*
@@ -629,8 +593,6 @@ public class TP2 extends JFrame implements ActionListener{
 		JLabel version = new JLabel("Version : 1.0\n");
 		JLabel conceptrice = new JLabel("Conceptrice: Noemie Gagnon");
 
-		this.add(version);
-		this.add(conceptrice);
 */
 		JLabel version = new JLabel("Version : 1.0\n");
 		JLabel conceptrice = new JLabel("Conceptrice: Noemie Gagnon");
@@ -642,6 +604,7 @@ public class TP2 extends JFrame implements ActionListener{
 
     }}
     
+    // Afficher un jeu 
 	public void afficherJeu(TestInterface b, String fab, String titre ) 			
 	throws IOException 
 	{
@@ -664,25 +627,17 @@ public class TP2 extends JFrame implements ActionListener{
 		new	TP2(1000,500);
 	}
 	
-	
+	/*
 	//pas besoin
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		/*
 		String text = tf.getText();
 		String action = e.getActionCommand();
 		System.out.println(text);
 		System.out.println(action);
-		/*
-		if(action == "Load bdd") {
-	    	laBase.loadBdd(text);
-
-		}
-
-
-		if(action == "Reset") {
-			tf.setText("");
-		} 
-		*/
+		
 
 	}
+*/
 }
