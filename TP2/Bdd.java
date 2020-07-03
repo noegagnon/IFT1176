@@ -172,8 +172,9 @@ public class Bdd implements TestInterface{
 	}
 
 	// Enregistre la banque de donnees dans un fichier dont le nom est passe en parametre
-	public void saveBdd(String nomFichier){	
+	public boolean saveBdd(String nomFichier){	
 		boolean probleme = false;
+		boolean sauvegarde = true;
 		FileWriter fw = null;
 		try
 		{
@@ -196,9 +197,12 @@ public class Bdd implements TestInterface{
 		} catch(java.io.FileNotFoundException erreur){
 			System.out.println("Probleme pour preparer l'ecriture\n");
 			probleme = true;
+			sauvegarde = false;
 		} catch(IOException e) {
 			System.out.println("Erreur lors de l'ecriture du fichier");
+			sauvegarde = false;
 		}
 		System.out.println("Fin de la creation du fichier " + nomFichier + "\n\n");
+		return sauvegarde;
 	}
 }

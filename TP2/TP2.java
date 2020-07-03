@@ -16,45 +16,20 @@ public class TP2 extends JFrame{
 	private JFrame frame1;
 
 	// panel
-	private JPanel currentPanel;
-	private JPanel loadBddPanel = new loadPanel();
-	private JPanel addBddPanel = new addPanel();
-	private JPanel saveBddPanel = new savePanel();
-	private JPanel addJeuPanel = new addJeuPanel();
-	private JPanel getJeuPanel = new getJeuPanel();
-	private JPanel chercheConsolePanel = new consolePanel();
-	private JPanel getJeuFabPanel = new fabricantPanel();
-	private JPanel chercheCotePanel = new cotePanel();
-	private JPanel appliInfoPanel = new appliPanel();
-
+	private JPanel currentPanel,loadBddPanel = new loadPanel(), addBddPanel = new addPanel(),
+				   saveBddPanel = new savePanel(), addJeuPanel = new addJeuPanel(),
+				   getJeuPanel = new getJeuPanel(), chercheConsolePanel = new consolePanel(),
+				   getJeuFabPanel = new fabricantPanel(), chercheCotePanel = new cotePanel(),
+				   appliInfoPanel = new appliPanel();
 
 	// Messages pour chaque panel
-	private TextField tf;
-	private TextField bddAAdd;
-	private TextField bddALoad;
-	private TextField titreAAjouter;
-	private TextField fabricantAAjouter;
-	private TextField coteAAjouter;
-	private TextField fabricant;
-	private TextField titre;
-	private TextField console;
-	private TextField fab;
-	private TextField cote;
+	private TextField tf, bddAAdd, bddALoad, titreAAjouter, fabricantAAjouter, coteAAjouter,
+				 	  fabricant, titre, console, fab, cote;
 
 	// Menu
-	private JMenu fichier;
-	private JMenuItem loadBdd;
-	private JMenuItem addBdd;
-	private JMenuItem saveBdd;
-	private JMenu jeu;
-	private JMenuItem addJeu;
-	private JMenuItem getJeu;
-	private JMenuItem chercheConsole;
-	private JMenuItem getJeuFabricant;
-	private JMenuItem chercheCote;
-	private JMenu aide;
-	private JMenuItem appliBdd;
-	private JMenuItem fermer;
+	private JMenu fichier, jeu, aide;
+	private JMenuItem loadBdd, addBdd, saveBdd, addJeu, getJeu, chercheConsole, getJeuFabricant,
+					  chercheCote, appliBdd, fermer;
 
 	TestInterface laBase = new Bdd();
 	Jeu unJeu;	
@@ -118,16 +93,8 @@ public class TP2 extends JFrame{
 		mb.add(jeu);
 		mb.add(aide);
 				
-		// Boutons
-		/*
-		JButton buttonLoad = new JButton("Load bdd");
-		JButton buttonEffacer = new JButton("Effacer");
-		
-		buttonLoad.addActionListener(this);
-		buttonEffacer.addActionListener(this);
-			*/
 		currentPanel = new JPanel();
-		currentPanel.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
+		currentPanel.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
 		currentPanel.add(new JLabel("Veuillez choisir une option dans la barre de menu."));
 		
 		frame1.setJMenuBar(mb);
@@ -139,6 +106,7 @@ public class TP2 extends JFrame{
 		frame1.setVisible(true);
 		frame1.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
+		// Afficher le panel en fonction de l'item du menu selectionne
 		loadBdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
                 swapPanel(loadBddPanel);
@@ -205,8 +173,7 @@ public class TP2 extends JFrame{
 	
 	// Chargement d'un fichier dans la banque de donnees
     public class loadPanel extends JPanel implements ActionListener {{
-        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
+		this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
 
 		JButton buttonLoad = new JButton("Charger la bdd");
 		JButton buttonEffacer = new JButton("Effacer");
@@ -248,8 +215,7 @@ public class TP2 extends JFrame{
     
     // Sauvegarde de la banque de donnees dans un fichier
     public class savePanel extends JPanel implements ActionListener {{
-        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
+		this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
 
 		JButton buttonSave = new JButton("Sauvegarder la bdd");
 		JButton buttonEffacer = new JButton("Effacer");
@@ -291,8 +257,7 @@ public class TP2 extends JFrame{
     
     // Ajout d'un fichier a la banque de donnees
     public class addPanel extends JPanel implements ActionListener {{
-        //this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
+		this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
 
 		JButton buttonAdd = new JButton("Ajouter la bdd");
 		JButton buttonEffacer = new JButton("Effacer");
@@ -334,8 +299,7 @@ public class TP2 extends JFrame{
     
     // Ajout d'un jeu a la banque de donnees
     public class addJeuPanel extends JPanel implements ActionListener {{
-        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
+		this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
 
 		JButton buttonAddJeu = new JButton("Ajouter jeu");
 		JButton buttonEffacer = new JButton("Effacer");
@@ -361,9 +325,9 @@ public class TP2 extends JFrame{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {		
-		String strTitreAAjouter = titreAAjouter.getText();
-		String strFabAAjouter = fabricantAAjouter.getText();
-		String strCoteAAjouter = coteAAjouter.getText();	
+		String strTitreAAjouter = titreAAjouter.getText().toUpperCase();
+		String strFabAAjouter = fabricantAAjouter.getText().toUpperCase();
+		String strCoteAAjouter = coteAAjouter.getText().toUpperCase();	
 		
 		String action = e.getActionCommand();
 		System.out.println(titreAAjouter);
@@ -374,7 +338,8 @@ public class TP2 extends JFrame{
 	    	unJeu = new Jeu(strFabAAjouter, strTitreAAjouter, strCoteAAjouter);
 	    	laBase.addJeu(unJeu);
 	    	JOptionPane.showMessageDialog(frame1,
-	    		    "Le jeu " + strTitreAAjouter + " du fabricant " + strFabAAjouter + " ayant une cote " + strCoteAAjouter + " a bien ete ajoute a la banque de donnees",
+	    		    "Le jeu " + strTitreAAjouter + " du fabricant " + strFabAAjouter + " ayant une cote " + strCoteAAjouter 
+	    		    + " a bien ete ajoute a la banque de donnees",
 	    		    "Ajout d'un jeu",
 	    		    JOptionPane.PLAIN_MESSAGE);
 		} else if(action == "Effacer") {
@@ -386,8 +351,8 @@ public class TP2 extends JFrame{
     
     // Affichage d'un jeu de la banque de donnees
     public class getJeuPanel extends JPanel implements ActionListener {{
-        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
+		this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
+		
 		JButton buttonGetJeu = new JButton("Trouver le jeu");
 		JButton buttonEffacer = new JButton("Effacer");
 		buttonGetJeu.addActionListener(this);
@@ -395,9 +360,9 @@ public class TP2 extends JFrame{
 		JLabel titreAEcrire = new JLabel("Veuillez entrez le titre du jeu recherche");
 		JLabel fabricantAEcrire = new JLabel("Veuillez entrez le fabricant du jeu recherche");
 		JLabel reponse = new JLabel();
-	
 		titre = new TextField(50);
 		fabricant = new TextField(50);
+		
 		this.add(titreAEcrire);
 		this.add(titre);
 		this.add(fabricantAEcrire);
@@ -409,15 +374,10 @@ public class TP2 extends JFrame{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {		
-		String strTitre = titre.getText();
-		String strFabricant = fabricant.getText();	
+		String strTitre = titre.getText().toUpperCase();
+		String strFabricant = fabricant.getText().toUpperCase();	
 		String action = e.getActionCommand();
-		System.out.println(titre);
-		System.out.println(fabricant);
-
-		System.out.println("action" + action);
 		if(action == "Trouver le jeu") {
-	    	laBase.getJeu(strTitre, strFabricant);
 	    	if(laBase.getJeu(strTitre, strFabricant) != null) {
 		    	JOptionPane.showMessageDialog(frame1,
 		    			"Voici le jeu recherché : \n" + laBase.getJeu(strTitre, strFabricant),
@@ -438,15 +398,15 @@ public class TP2 extends JFrame{
     
     // Affichage des jeux faisant partie de la banque de donnees se jouant sur une console voulue
     public class consolePanel extends JPanel implements ActionListener {{
-		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
+		this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
 
 		JButton buttonConsole = new JButton("Chercher les jeux pour cette console");
 		JButton buttonEffacer = new JButton("Effacer");
 		buttonConsole.addActionListener(this);
 		buttonEffacer.addActionListener(this);
 		JLabel consoleAEcrire = new JLabel("Veuillez entrez une console");
-
 		console = new TextField(50);
+		
 		this.add(consoleAEcrire);
 		this.add(console);
 		this.add(buttonConsole);
@@ -455,17 +415,22 @@ public class TP2 extends JFrame{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String strConsole = console.getText();
+		String strConsole = console.getText().toUpperCase();
 		String action = e.getActionCommand();
-		System.out.println(strConsole);
-		System.out.println("action" + action);
+
 		if(action == "Chercher les jeux pour cette console") {
 	    	laBase.chercheConsole(strConsole);
 	    	if(laBase.chercheConsole(strConsole).size() != 0) {
-		    	JOptionPane.showMessageDialog(frame1,
-		    			"Voici le(s) jeu(x) se jouant sur la console " + strConsole + ":\n" + laBase.chercheConsole(strConsole),
-		    		    "Jeu(x) sur une console",
-		    		    JOptionPane.PLAIN_MESSAGE);	    		
+	    		JTextArea textArea = new JTextArea(10,40);
+	    		ArrayList<Jeu> ensemble = laBase.chercheConsole(strConsole);
+	    		String jeuxAAfficher = "";
+	    		for(Jeu j : ensemble) {
+	    			System.out.println("jeu " + j);
+	    			jeuxAAfficher += j + "\n";
+				} 	
+	    		textArea.setText(jeuxAAfficher);
+	    	    JScrollPane scrollPane = new JScrollPane(textArea);
+	    	    JOptionPane.showMessageDialog(frame1, scrollPane, "Jeux ayant la cote " + strConsole, JOptionPane.PLAIN_MESSAGE);
 	    	} else {
 		    	JOptionPane.showMessageDialog(frame1,
 		    			"Aucun jeu se jouant sur la console " + strConsole + " n'a ete trouvé",
@@ -479,7 +444,7 @@ public class TP2 extends JFrame{
     
     // Affichage des jeux faisant partie de la banque de donnees provenant d'un fabricant voulu
     public class fabricantPanel extends JPanel implements ActionListener {{
-		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
+		this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
 
 		JButton buttonFabricant = new JButton("Chercher les jeux de ce fabricant");
 		JButton buttonEffacer = new JButton("Effacer");
@@ -496,17 +461,23 @@ public class TP2 extends JFrame{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String strFabricant = fab.getText();
+		String strFabricant = fab.getText().toUpperCase();
 		String action = e.getActionCommand();
 		System.out.println(strFabricant);
 		System.out.println("action" + action);
 		if(action == "Chercher les jeux de ce fabricant") {
 	    	laBase.getJeuxFabricant(strFabricant);
 	    	if(laBase.getJeuxFabricant(strFabricant).size() != 0) {
-		    	JOptionPane.showMessageDialog(frame1,
-		    			"Voici le(s) jeu(x) du fabricant " + strFabricant + ":\n" + laBase.getJeuxFabricant(strFabricant),
-		    		    "Jeu(x) sur une console",
-		    		    JOptionPane.PLAIN_MESSAGE);	    		
+	    		JTextArea textArea = new JTextArea(10,30);
+	    		Collection<Jeu> ensemble = laBase.getJeuxFabricant(strFabricant);
+	    		String jeuxAAfficher = "";
+	    		for(Jeu j : ensemble) {
+	    			System.out.println("jeu " + j);
+	    			jeuxAAfficher += j + "\n";
+				} 	
+	    		textArea.setText(jeuxAAfficher);
+	    	    JScrollPane scrollPane = new JScrollPane(textArea);
+	    	    JOptionPane.showMessageDialog(frame1, scrollPane, "Jeux du fabricant " + strFabricant, JOptionPane.PLAIN_MESSAGE);
 	    	} else {
 		    	JOptionPane.showMessageDialog(frame1,
 		    			"Aucun jeu du fabricant " + strFabricant + " n'a ete trouvé",
@@ -520,7 +491,7 @@ public class TP2 extends JFrame{
     
     // Affichage des jeux faisant partie de la banque de donnees ayant une cote voulue
     public class cotePanel extends JPanel implements ActionListener {{
-		this.setBorder(BorderFactory.createEmptyBorder(60,60,60,60));
+		this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
 		JButton buttonCote = new JButton("Chercher les jeux avec cette cote");
 		JButton buttonEffacer = new JButton("Effacer");
 		buttonCote.addActionListener(this);
@@ -536,17 +507,24 @@ public class TP2 extends JFrame{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String strCote = cote.getText();
+		String strCote = cote.getText().toUpperCase();
 		String action = e.getActionCommand();
 		System.out.println(strCote);
 		System.out.println("action" + action);
 		if(action == "Chercher les jeux avec cette cote") {
 	    	laBase.chercheCote(strCote);	    	
 	    	if(laBase.chercheCote(strCote).size() != 0) {
-		    	JOptionPane.showMessageDialog(frame1,
-		    			"Voici le(s) jeu(x) avec la cote " + strCote + ":\n" + laBase.chercheCote(strCote),
-		    		    "Jeu(x) sur une console",
-		    		    JOptionPane.PLAIN_MESSAGE);	    		
+	    		JTextArea textArea = new JTextArea(10,30);
+	    		Collection<Jeu> ensemble = laBase.chercheCote(strCote);
+	    		String jeuxAAfficher = "";
+	    		for(Jeu j : ensemble) {
+	    			System.out.println("jeu " + j);
+	    			jeuxAAfficher += j + "\n";
+				} 	
+	    		textArea.setText(jeuxAAfficher);
+	    	    JScrollPane scrollPane = new JScrollPane(textArea);
+	    	    JOptionPane.showMessageDialog(frame1, scrollPane, "Jeux ayant la cote " + strCote, JOptionPane.PLAIN_MESSAGE);
+
 	    	} else {
 		    	JOptionPane.showMessageDialog(frame1,
 		    			"Aucun jeu ayant la cote " + strCote + " n'a ete trouvé",
@@ -567,6 +545,7 @@ public class TP2 extends JFrame{
         this.setBorder(BorderFactory.createEmptyBorder(150, 150, 150, 150));
     }}
     
+    // Changer de panel
     protected void swapPanel(JPanel newPanel) {
         SwingUtilities.invokeLater(new Runnable() {   	
             @Override
@@ -580,40 +559,8 @@ public class TP2 extends JFrame{
         });
     }
     
-    // Afficher un jeu 
-	public void afficherJeu(TestInterface b, String fab, String titre ) 			
-	throws IOException 
-	{
-		Jeu aAfficher = b.getJeu(titre, fab);
-		if( aAfficher != null) {
-	    	JOptionPane.showMessageDialog(frame1,
-	    			"Jeu a affichier: \n" + aAfficher,
-	    		    "Affichage d'un jeu",
-	    		    JOptionPane.PLAIN_MESSAGE); 
-		} else {
-	    	JOptionPane.showMessageDialog(frame1,
-	    			"Le jeu " + titre + " du fabricant " + fab + "n'est pas dans la banque de donnees",
-	    		    "Affichage d'un jeu",
-	    		    JOptionPane.PLAIN_MESSAGE); 
-			
-		}
-	}
-	
 	public static void main (String[] args) {
-		new	TP2(600,500);
+		new	TP2(650,600);
 	}
-	
-	/*
-	//pas besoin
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		/*
-		String text = tf.getText();
-		String action = e.getActionCommand();
-		System.out.println(text);
-		System.out.println(action);
-		
 
-	}
-*/
 }
