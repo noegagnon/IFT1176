@@ -12,7 +12,7 @@ import java.util.*;
 import java.io.*;
 
 
-public class TP2 extends JFrame{
+public class TP2 extends JFrame implements ActionListener  {
 
 	private JFrame frame1;
 	
@@ -73,6 +73,8 @@ public class TP2 extends JFrame{
 	    // fermer  ????????
 	    KeyStroke keyFermer = KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK);
 	    quitter.setAccelerator(keyFermer); 	  
+	    quitter.addActionListener(this);
+	    
 	    KeyStroke keyLoad = KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK);
 	    loadBdd.setAccelerator(keyLoad); 
 	    KeyStroke keySave = KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK);
@@ -553,6 +555,13 @@ public class TP2 extends JFrame{
     
 	public static void main (String[] args) {
 		new	TP2(650,600);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		setVisible(false);
+		dispose();
+		System.exit(0);
 	}
 
 }
