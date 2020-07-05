@@ -11,9 +11,12 @@ import javax.swing.*;
 import java.util.*;
 import java.io.*;
 
+
 public class TP2 extends JFrame{
 
 	private JFrame frame1;
+	
+	private String nomFichier;
 
 	// panel
 	private JPanel currentPanel,loadBddPanel = new loadPanel(), addBddPanel = new addPanel(),
@@ -28,8 +31,8 @@ public class TP2 extends JFrame{
 
 	// Menu
 	private JMenu fichier, jeu, aide;
-	private JMenuItem loadBdd, addBdd, saveBdd, addJeu, getJeu, chercheConsole, getJeuFabricant,
-					  chercheCote, appliBdd, fermer;
+	private JMenuItem loadBdd, addBdd, saveBdd, quitter, trouverPar, addJeu, getJeu, chercheConsole, getJeuFabricant,
+					  chercheCote, appliBdd;
 
 	TestInterface laBase = new Bdd();
 	Jeu unJeu;	
@@ -44,15 +47,16 @@ public class TP2 extends JFrame{
 		loadBdd = new JMenuItem("Charger une banque de donnees");
 		addBdd = new JMenuItem("Ajouter une banque de donnees");
 		saveBdd = new JMenuItem("Sauvegarder une banque de donnees");
+		quitter = new JMenuItem("Quitter");
 		jeu = new JMenu("Jeu");
 		addJeu = new JMenuItem("Ajouter un jeu");
 		getJeu = new JMenuItem("Trouver un jeu");
-		chercheConsole = new JMenuItem("Trouver les jeux par console");
-		getJeuFabricant = new JMenuItem("Trouver les jeux par fabricant");
-		chercheCote = new JMenuItem("Trouver les jeux par cote");
+		trouverPar = new JMenu("Trouver les jeux par...");
+		chercheConsole = new JMenuItem("console");
+		getJeuFabricant = new JMenuItem("fabricant");
+		chercheCote = new JMenuItem("cote");
 		aide = new JMenu("Aide");
-		appliBdd = new JMenuItem("AppliBdd");
-		fermer = new JMenuItem("Fermer");
+		appliBdd = new JMenuItem("A propos de BddGESTION");
 		
 		// raccourcis
 	    KeyStroke keyAddbdd = KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK);
@@ -64,9 +68,11 @@ public class TP2 extends JFrame{
 	    KeyStroke keyCote = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK);
 	    chercheCote.setAccelerator(keyCote);    
 	    
+	    //frame1.dispatchEvent(new WindowEvent(frame1, WindowEvent.WINDOW_CLOSING));
+	    
 	    // fermer  ????????
 	    KeyStroke keyFermer = KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK);
-	    fermer.setAccelerator(keyFermer); 	  
+	    quitter.setAccelerator(keyFermer); 	  
 	    KeyStroke keyLoad = KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK);
 	    loadBdd.setAccelerator(keyLoad); 
 	    KeyStroke keySave = KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK);
@@ -80,13 +86,18 @@ public class TP2 extends JFrame{
 		fichier.add(loadBdd);
 		fichier.add(addBdd);
 		fichier.add(saveBdd);
+		fichier.add(quitter);
+
 		jeu.add(addJeu);
 		jeu.add(getJeu);
-		jeu.add(chercheConsole);
-		jeu.add(getJeuFabricant);
-		jeu.add(chercheCote);
+		jeu.add(trouverPar);
+
+		trouverPar.add(chercheConsole);
+		trouverPar.add(getJeuFabricant);
+		trouverPar.add(chercheCote);
+
+
 		aide.add(appliBdd);
-		aide.add(fermer);
 
 		// Ajout des elements du menu a la banque de donnees
 		mb.add(fichier);
@@ -100,7 +111,7 @@ public class TP2 extends JFrame{
 		frame1.setJMenuBar(mb);
 		frame1.add(currentPanel, BorderLayout.CENTER);
 		frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame1.setTitle("Gestion d'une banque de donnees de jeux videos");
+		frame1.setTitle("BddGESTION");
 		frame1.setSize(l, h);
 		frame1.setLocationRelativeTo(null);
 		frame1.setVisible(true);
@@ -174,43 +185,34 @@ public class TP2 extends JFrame{
 	// Chargement d'un fichier dans la banque de donnees
     public class loadPanel extends JPanel implements ActionListener {{
 		this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
-
-		JButton buttonLoad = new JButton("Charger la bdd");
-		JButton buttonEffacer = new JButton("Effacer");
+		JButton buttonLoad = new JButton("Choisir le fichier a charger");
 		buttonLoad.addActionListener(this);
-		buttonEffacer.addActionListener(this);
-		JLabel demandeFichier = new JLabel("Veuillez entrez le nom du fichier a charger");
-
-		//bddALoad = new TextField(50);
-		this.add(demandeFichier);
-		this.add(bddALoad = new TextField(50));
 		this.add(buttonLoad);
-		this.add(buttonEffacer);
     }
 
 	@Override
 	public void actionPerformed(ActionEvent e) {		
-		String text = bddALoad.getText();
 		String action = e.getActionCommand();
-		System.out.println(text);
-		System.out.println("action" + action);
-		if(action == "Charger la bdd") {
-	    	laBase.loadBdd(text);
-	    	if(laBase.loadBdd(text)) {
+		if(action == "Choisir le fichier a charger") {
+			   FileDialog boiteFichier = new FileDialog(frame1);
+			   boiteFichier.setVisible(true);
+		
+			   nomFichier = boiteFichier.getFile();
+
+			   laBase.loadBdd(nomFichier);
+			   
+	    	if(laBase.loadBdd(nomFichier)) {
 		    	JOptionPane.showMessageDialog(frame1,
-		    		    "La banque de donnees a ete creee a partir du fichier " + text,
+		    		    "La banque de donnees a ete creee a partir du fichier " + nomFichier,
 		    		    "Creation d'une bdd",
 		    		    JOptionPane.PLAIN_MESSAGE);
 	    	} else {
 		    	JOptionPane.showMessageDialog(frame1,
-		    			"La banque de donnees a partir du fichier " + text + " n'a pas pu etre creee",
+		    			"La banque de donnees a partir du fichier " + nomFichier + " n'a pas pu etre creee",
 		    		    "Creation d'une bdd",
 		    		    JOptionPane.ERROR_MESSAGE);		
 	    	}
-
-		} else if(action == "Effacer") {
-			bddALoad.setText("");
-		} 	
+		}
 	}}
     
     // Sauvegarde de la banque de donnees dans un fichier
@@ -258,42 +260,32 @@ public class TP2 extends JFrame{
     // Ajout d'un fichier a la banque de donnees
     public class addPanel extends JPanel implements ActionListener {{
 		this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
-
 		JButton buttonAdd = new JButton("Ajouter la bdd");
-		JButton buttonEffacer = new JButton("Effacer");
 		buttonAdd.addActionListener(this);
-		buttonEffacer.addActionListener(this);
-		
-		JLabel demandeFichier = new JLabel("Veuillez entrez le nom du fichier a ajouter a la banque de donnees");
-		bddAAdd = new TextField(50);
-		this.add(demandeFichier);
-		this.add(bddAAdd);
 		this.add(buttonAdd);
-		this.add(buttonEffacer);
     }
 
 	@Override
 	public void actionPerformed(ActionEvent e) {		
-		String strFichier = bddAAdd.getText();
 		String action = e.getActionCommand();
-		System.out.println(strFichier);
-		System.out.println("action" + action);
 		if(action == "Ajouter la bdd") {
-	    	laBase.addBdd(strFichier);
-	    	if(laBase.addBdd(strFichier)) {
+			   FileDialog boiteFichier = new FileDialog(frame1);
+			   boiteFichier.setVisible(true);
+		
+			   nomFichier = boiteFichier.getFile();
+	    	laBase.addBdd(nomFichier);
+	    	if(laBase.addBdd(nomFichier)) {
 		    	JOptionPane.showMessageDialog(frame1,
-		    		    "Le fichier " + strFichier + " a ete ajoute a la banque de donnees ",
+		    		    "Le fichier " + nomFichier + " a ete ajoute a la banque de donnees ",
 		    		    "Ajout d'une bdd",
 		    		    JOptionPane.PLAIN_MESSAGE);
 	    	} else {
 		    	JOptionPane.showMessageDialog(frame1,
-		    		    "Le fichier " + strFichier + " n'a pas pu etre ajoute a la banque de donnees",
+		    		    "Le fichier " + nomFichier + " n'a pas pu etre ajoute a la banque de donnees",
 		    		    "Ajout d'une bdd",
 		    		    JOptionPane.ERROR_MESSAGE);		
 	    	}
-		} else if(action == "Effacer") {
-			bddAAdd.setText("");
-		} 	
+		}
 	}}
 
     
@@ -541,7 +533,7 @@ public class TP2 extends JFrame{
         this.setLayout(new GridLayout(4,1));
         this.add(new JLabel("Version : 1.0", JLabel.CENTER));
         this.add(new JLabel("Conceptrice: Noemie Gagnon", JLabel.CENTER));
-        this.add(new JLabel("Copyright: blabla", JLabel.CENTER));
+        this.add(new JLabel("(c) Copyright BddGESTION Tous droits réservés.", JLabel.CENTER));
         this.setBorder(BorderFactory.createEmptyBorder(150, 150, 150, 150));
     }}
     
