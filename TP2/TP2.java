@@ -58,7 +58,7 @@ public class TP2 extends JFrame implements ActionListener  {
 		aide = new JMenu("Aide");
 		appliBdd = new JMenuItem("A propos de BddGESTION");
 		
-		// raccourcis
+		// Raccourcis
 	    KeyStroke keyAddbdd = KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK);
 	    addBdd.setAccelerator(keyAddbdd);
 	    KeyStroke keyJeu = KeyStroke.getKeyStroke(KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK);
@@ -67,10 +67,6 @@ public class TP2 extends JFrame implements ActionListener  {
 	    chercheConsole.setAccelerator(keyConsole);    
 	    KeyStroke keyCote = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK);
 	    chercheCote.setAccelerator(keyCote);    
-	    
-	    //frame1.dispatchEvent(new WindowEvent(frame1, WindowEvent.WINDOW_CLOSING));
-	    
-	    // fermer  ????????
 	    KeyStroke keyFermer = KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK);
 	    quitter.setAccelerator(keyFermer); 	  
 	    quitter.addActionListener(this);
@@ -93,23 +89,24 @@ public class TP2 extends JFrame implements ActionListener  {
 		jeu.add(addJeu);
 		jeu.add(getJeu);
 		jeu.add(trouverPar);
-
+		
 		trouverPar.add(chercheConsole);
 		trouverPar.add(getJeuFabricant);
 		trouverPar.add(chercheCote);
-
-
+		
 		aide.add(appliBdd);
 
 		// Ajout des elements du menu a la banque de donnees
 		mb.add(fichier);
 		mb.add(jeu);
 		mb.add(aide);
-				
+		
+		// 1er panel
 		currentPanel = new JPanel();
 		currentPanel.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
 		currentPanel.add(new JLabel("Veuillez choisir une option dans la barre de menu."));
 		
+		// Gestion du frame
 		frame1.setJMenuBar(mb);
 		frame1.add(currentPanel, BorderLayout.CENTER);
 		frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -238,8 +235,6 @@ public class TP2 extends JFrame implements ActionListener  {
 	public void actionPerformed(ActionEvent e) {
 		String strToSave = tf.getText();
 		String action = e.getActionCommand();
-		System.out.println(strToSave);
-		System.out.println("action" + action);
 		if(action == "Sauvegarder la bdd") {
 	    	laBase.saveBdd(strToSave);
 	    	if(laBase.saveBdd(strToSave)) {
@@ -288,7 +283,6 @@ public class TP2 extends JFrame implements ActionListener  {
 		}
 	}}
 
-    
     // Ajout d'un jeu a la banque de donnees
     public class addJeuPanel extends JPanel implements ActionListener {{
 		this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
@@ -302,7 +296,7 @@ public class TP2 extends JFrame implements ActionListener  {
 		JLabel ajouterTitre = new JLabel("Veuillez entrez le titre du jeu a ajouter");
 		JLabel ajouterFabricant = new JLabel("Veuillez entrez le fabricant du jeu a ajouter");
 		JLabel ajouterCote = new JLabel("Veuillez entrez la cote du jeu a ajouter");
-		JLabel ajouterConsole = new JLabel("Veuillez cliquez afin d'ajouter une/des console(s) a ce jeu");
+		JLabel ajouterConsole = new JLabel("Veuillez cliquez sur le bouton suivant afin d'ajouter une/des console(s) a ce jeu");
 
 		titreAAjouter = new TextField(50);
 		fabricantAAjouter = new TextField(50);
@@ -348,17 +342,27 @@ public class TP2 extends JFrame implements ActionListener  {
 			fabricantAAjouter.setText("");
 			coteAAjouter.setText("");
 		} 	
+		int ajouterAutre;
 		if(action == "Ajouter une/des console(s)") {
-	        String console = JOptionPane.showInputDialog(frame1, "Ajoutez une console", "Console", JOptionPane.PLAIN_MESSAGE).toUpperCase();
-	        unJeu.addConsole(console);
-	        System.out.println(console);
+			if(unJeu == null) {
+	    		UIManager.put("OptionPane.minimumSize",new Dimension(600,100)); 
+		    	JOptionPane.showMessageDialog(frame1,
+		    		    "Veuillez ajouter un jeu avant d'y ajouter des consoles",
+		    		    "Jeu manquant",
+		    		    JOptionPane.WARNING_MESSAGE);
+			} else {
+				do {
+			        String console = JOptionPane.showInputDialog(frame1, "Entrez une console", "Console", JOptionPane.PLAIN_MESSAGE).toUpperCase();
+			        unJeu.addConsole(console);				
+			        ajouterAutre = JOptionPane.showConfirmDialog(null, "Voulez-vous ajouter une autre console?", "Ajout de console", JOptionPane.YES_NO_OPTION);
+				} while (ajouterAutre == JOptionPane.YES_OPTION);				
+			}
 		}
 	}}
     
     // Affichage d'un jeu de la banque de donnees
     public class getJeuPanel extends JPanel implements ActionListener {{
 		this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
-		
 		JButton buttonGetJeu = new JButton("Trouver le jeu");
 		JButton buttonEffacer = new JButton("Effacer");
 		buttonGetJeu.addActionListener(this);
@@ -368,7 +372,6 @@ public class TP2 extends JFrame implements ActionListener  {
 		JLabel reponse = new JLabel();
 		titre = new TextField(50);
 		fabricant = new TextField(50);
-		
 		this.add(titreAEcrire);
 		this.add(titre);
 		this.add(fabricantAEcrire);
@@ -413,14 +416,12 @@ public class TP2 extends JFrame implements ActionListener  {
     // Affichage des jeux faisant partie de la banque de donnees se jouant sur une console voulue
     public class consolePanel extends JPanel implements ActionListener {{
 		this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
-
 		JButton buttonConsole = new JButton("Chercher les jeux pour cette console");
 		JButton buttonEffacer = new JButton("Effacer");
 		buttonConsole.addActionListener(this);
 		buttonEffacer.addActionListener(this);
 		JLabel consoleAEcrire = new JLabel("Veuillez entrez une console");
 		console = new TextField(50);
-		
 		this.add(consoleAEcrire);
 		this.add(console);
 		this.add(buttonConsole);
@@ -439,7 +440,6 @@ public class TP2 extends JFrame implements ActionListener  {
 	    		ArrayList<Jeu> ensemble = laBase.chercheConsole(strConsole);
 	    		String jeuxAAfficher = "";
 	    		for(Jeu j : ensemble) {
-	    			System.out.println("jeu " + j);
 	    			jeuxAAfficher += j + "\n";
 				} 	
 	    		textArea.setText(jeuxAAfficher);
@@ -485,7 +485,6 @@ public class TP2 extends JFrame implements ActionListener  {
 	    		Collection<Jeu> ensemble = laBase.getJeuxFabricant(strFabricant);
 	    		String jeuxAAfficher = "";
 	    		for(Jeu j : ensemble) {
-	    			System.out.println("jeu " + j);
 	    			jeuxAAfficher += j + "\n";
 				} 	
 	    		textArea.setText(jeuxAAfficher);
@@ -523,8 +522,6 @@ public class TP2 extends JFrame implements ActionListener  {
 	public void actionPerformed(ActionEvent e) {
 		String strCote = cote.getText().toUpperCase();
 		String action = e.getActionCommand();
-		System.out.println(strCote);
-		System.out.println("action" + action);
 		if(action == "Chercher les jeux avec cette cote") {
 	    	laBase.chercheCote(strCote);	    	
 	    	if(laBase.chercheCote(strCote).size() != 0) {
@@ -532,7 +529,6 @@ public class TP2 extends JFrame implements ActionListener  {
 	    		Collection<Jeu> ensemble = laBase.chercheCote(strCote);
 	    		String jeuxAAfficher = "";
 	    		for(Jeu j : ensemble) {
-	    			System.out.println("jeu " + j);
 	    			jeuxAAfficher += j + "\n";
 				} 	
 	    		textArea.setText(jeuxAAfficher);
@@ -574,7 +570,7 @@ public class TP2 extends JFrame implements ActionListener  {
     }
     
 	public static void main (String[] args) {
-		new	TP2(650,600);
+		new	TP2(650,800);
 	}
 
 	@Override
