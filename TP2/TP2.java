@@ -227,7 +227,6 @@ public class TP2 extends JFrame implements ActionListener  {
 		buttonEffacer.addActionListener(this);
 		JLabel demandeFichier = new JLabel("Veuillez entrez le nom du fichier dans lequel sauvegarder la banque de donnees");
 
-		
 		tf = new TextField(50);
 		this.add(demandeFichier);
 		this.add(tf);
@@ -271,10 +270,9 @@ public class TP2 extends JFrame implements ActionListener  {
 	public void actionPerformed(ActionEvent e) {		
 		String action = e.getActionCommand();
 		if(action == "Ajouter la bdd") {
-			   FileDialog boiteFichier = new FileDialog(frame1);
-			   boiteFichier.setVisible(true);
-		
-			   nomFichier = boiteFichier.getFile();
+		    FileDialog boiteFichier = new FileDialog(frame1);
+		    boiteFichier.setVisible(true);
+		    nomFichier = boiteFichier.getFile();
 	    	laBase.addBdd(nomFichier);
 	    	if(laBase.addBdd(nomFichier)) {
 		    	JOptionPane.showMessageDialog(frame1,
@@ -297,11 +295,14 @@ public class TP2 extends JFrame implements ActionListener  {
 
 		JButton buttonAddJeu = new JButton("Ajouter jeu");
 		JButton buttonEffacer = new JButton("Effacer");
+		JButton buttonConsole = new JButton("Ajouter une/des console(s)");
 		buttonAddJeu.addActionListener(this);
 		buttonEffacer.addActionListener(this);
+		buttonConsole.addActionListener(this);
 		JLabel ajouterTitre = new JLabel("Veuillez entrez le titre du jeu a ajouter");
 		JLabel ajouterFabricant = new JLabel("Veuillez entrez le fabricant du jeu a ajouter");
 		JLabel ajouterCote = new JLabel("Veuillez entrez la cote du jeu a ajouter");
+		JLabel ajouterConsole = new JLabel("Veuillez cliquez afin d'ajouter une/des console(s) a ce jeu");
 
 		titreAAjouter = new TextField(50);
 		fabricantAAjouter = new TextField(50);
@@ -315,6 +316,8 @@ public class TP2 extends JFrame implements ActionListener  {
 		this.add(coteAAjouter);
 		this.add(buttonAddJeu);
 		this.add(buttonEffacer);
+		this.add(ajouterConsole);
+		this.add(buttonConsole);
     }
 
 	@Override
@@ -322,25 +325,34 @@ public class TP2 extends JFrame implements ActionListener  {
 		String strTitreAAjouter = titreAAjouter.getText().toUpperCase();
 		String strFabAAjouter = fabricantAAjouter.getText().toUpperCase();
 		String strCoteAAjouter = coteAAjouter.getText().toUpperCase();	
-		
-		String action = e.getActionCommand();
-		System.out.println(titreAAjouter);
-		System.out.println(fabricantAAjouter);
-
-		System.out.println("action" + action);
+		String action = e.getActionCommand();	
 		if(action == "Ajouter jeu") {
-	    	unJeu = new Jeu(strFabAAjouter, strTitreAAjouter, strCoteAAjouter);
-	    	laBase.addJeu(unJeu);
-	    	JOptionPane.showMessageDialog(frame1,
-	    		    "Le jeu " + strTitreAAjouter + " du fabricant " + strFabAAjouter + " ayant une cote " + strCoteAAjouter 
-	    		    + " a bien ete ajoute a la banque de donnees",
-	    		    "Ajout d'un jeu",
-	    		    JOptionPane.PLAIN_MESSAGE);
+			if(strTitreAAjouter.length() == 0 || strFabAAjouter.length() == 0 || strCoteAAjouter.length() == 0) {
+	    		UIManager.put("OptionPane.minimumSize",new Dimension(600,100)); 
+		    	JOptionPane.showMessageDialog(frame1,
+		    		    "Veuillez remplir tous les champs",
+		    		    "Informations manquantes",
+		    		    JOptionPane.WARNING_MESSAGE);
+				
+			} else {
+				unJeu = new Jeu(strFabAAjouter, strTitreAAjouter, strCoteAAjouter);
+		    	laBase.addJeu(unJeu);
+		    	JOptionPane.showMessageDialog(frame1,
+		    		    "Le jeu " + strTitreAAjouter + " du fabricant " + strFabAAjouter + " ayant une cote " + strCoteAAjouter 
+		    		    + " a bien ete ajoute a la banque de donnees",
+		    		    "Ajout d'un jeu",
+		    		    JOptionPane.PLAIN_MESSAGE);				
+			}
 		} else if(action == "Effacer") {
 			titreAAjouter.setText("");
 			fabricantAAjouter.setText("");
 			coteAAjouter.setText("");
 		} 	
+		if(action == "Ajouter une/des console(s)") {
+	        String console = JOptionPane.showInputDialog(frame1, "Ajoutez une console", "Console", JOptionPane.PLAIN_MESSAGE).toUpperCase();
+	        unJeu.addConsole(console);
+	        System.out.println(console);
+		}
 	}}
     
     // Affichage d'un jeu de la banque de donnees
@@ -372,18 +384,26 @@ public class TP2 extends JFrame implements ActionListener  {
 		String strFabricant = fabricant.getText().toUpperCase();	
 		String action = e.getActionCommand();
 		if(action == "Trouver le jeu") {
-	    	if(laBase.getJeu(strTitre, strFabricant) != null) {
+			if(strTitre.length() == 0 || strFabricant.length() == 0) {
+	    		UIManager.put("OptionPane.minimumSize",new Dimension(600,100)); 
 		    	JOptionPane.showMessageDialog(frame1,
-		    			"Voici le jeu recherché : \n" + laBase.getJeu(strTitre, strFabricant),
-		    		    "Jeu recherché",
-		    		    JOptionPane.PLAIN_MESSAGE);	    		
-	    	} else {
-		    	JOptionPane.showMessageDialog(frame1,
-		    			"Le jeu " + strTitre + "du fabricant " + strFabricant + " est introuvable",
-		    		    "Jeu recherché",
+		    		    "Veuillez remplir tous les champs",
+		    		    "Informations manquantes",
 		    		    JOptionPane.WARNING_MESSAGE);
-	    	}
-
+			} else {
+		    	if(laBase.getJeu(strTitre, strFabricant) != null) {
+			    	JOptionPane.showMessageDialog(frame1,
+			    			"Voici le jeu recherché : \n" + laBase.getJeu(strTitre, strFabricant),
+			    		    "Jeu recherché",
+			    		    JOptionPane.PLAIN_MESSAGE);	    		
+		    	} else {
+		    		UIManager.put("OptionPane.minimumSize",new Dimension(600,100)); 
+			    	JOptionPane.showMessageDialog(frame1,
+			    			"Le jeu " + strTitre + " du fabricant " + strFabricant + " est introuvable",
+			    		    "Jeu recherché",
+			    		    JOptionPane.WARNING_MESSAGE);
+		    	}				
+			}
 		} else if(action == "Effacer") {
 			titre.setText("");
 			fabricant.setText("");
@@ -415,7 +435,7 @@ public class TP2 extends JFrame implements ActionListener  {
 		if(action == "Chercher les jeux pour cette console") {
 	    	laBase.chercheConsole(strConsole);
 	    	if(laBase.chercheConsole(strConsole).size() != 0) {
-	    		JTextArea textArea = new JTextArea(10,40);
+	    		JTextArea textArea = new JTextArea(10,50);
 	    		ArrayList<Jeu> ensemble = laBase.chercheConsole(strConsole);
 	    		String jeuxAAfficher = "";
 	    		for(Jeu j : ensemble) {
@@ -424,10 +444,11 @@ public class TP2 extends JFrame implements ActionListener  {
 				} 	
 	    		textArea.setText(jeuxAAfficher);
 	    	    JScrollPane scrollPane = new JScrollPane(textArea);
-	    	    JOptionPane.showMessageDialog(frame1, scrollPane, "Jeux ayant la cote " + strConsole, JOptionPane.PLAIN_MESSAGE);
+	    	    JOptionPane.showMessageDialog(frame1, scrollPane, "Jeux pour la console " + strConsole, JOptionPane.PLAIN_MESSAGE);
 	    	} else {
+	    		UIManager.put("OptionPane.minimumSize",new Dimension(600,100)); 
 		    	JOptionPane.showMessageDialog(frame1,
-		    			"Aucun jeu se jouant sur la console " + strConsole + " n'a ete trouvé",
+		    			"Aucun jeu pour la console " + strConsole + " n'a ete trouvé",
 		    		    "Jeu(x) sur une console",
 		    		    JOptionPane.WARNING_MESSAGE);
 	    	}
@@ -457,12 +478,10 @@ public class TP2 extends JFrame implements ActionListener  {
 	public void actionPerformed(ActionEvent e) {
 		String strFabricant = fab.getText().toUpperCase();
 		String action = e.getActionCommand();
-		System.out.println(strFabricant);
-		System.out.println("action" + action);
 		if(action == "Chercher les jeux de ce fabricant") {
 	    	laBase.getJeuxFabricant(strFabricant);
 	    	if(laBase.getJeuxFabricant(strFabricant).size() != 0) {
-	    		JTextArea textArea = new JTextArea(10,30);
+	    		JTextArea textArea = new JTextArea(10,50);
 	    		Collection<Jeu> ensemble = laBase.getJeuxFabricant(strFabricant);
 	    		String jeuxAAfficher = "";
 	    		for(Jeu j : ensemble) {
@@ -473,9 +492,10 @@ public class TP2 extends JFrame implements ActionListener  {
 	    	    JScrollPane scrollPane = new JScrollPane(textArea);
 	    	    JOptionPane.showMessageDialog(frame1, scrollPane, "Jeux du fabricant " + strFabricant, JOptionPane.PLAIN_MESSAGE);
 	    	} else {
+	    		UIManager.put("OptionPane.minimumSize",new Dimension(600,100)); 
 		    	JOptionPane.showMessageDialog(frame1,
 		    			"Aucun jeu du fabricant " + strFabricant + " n'a ete trouvé",
-		    		    "Jeu(x) sur une console",
+		    		    "Jeu(x) d'un fabricant",
 		    		    JOptionPane.WARNING_MESSAGE);
 	    	}
 		} else if(action == "Effacer") {
@@ -508,7 +528,7 @@ public class TP2 extends JFrame implements ActionListener  {
 		if(action == "Chercher les jeux avec cette cote") {
 	    	laBase.chercheCote(strCote);	    	
 	    	if(laBase.chercheCote(strCote).size() != 0) {
-	    		JTextArea textArea = new JTextArea(10,30);
+	    		JTextArea textArea = new JTextArea(10,50);
 	    		Collection<Jeu> ensemble = laBase.chercheCote(strCote);
 	    		String jeuxAAfficher = "";
 	    		for(Jeu j : ensemble) {
