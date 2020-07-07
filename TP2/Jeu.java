@@ -65,6 +65,17 @@ public class Jeu implements Comparable<Jeu>
         String resultat = res.substring(0,res.length()-1);
         return resultat;
     }
+    
+    public String formatedString(){
+        String res = fabricant + "   " + titre + "   " + cote + "   "; 
+        if(consoles.size() != 0) {
+            for(String s : consoles)
+                res += s + ",";
+        }
+        String resultat = res.substring(0,res.length()-1);
+        return resultat;
+    }
+
 
     public void addConsole(String c){
 		consoles.add(c);

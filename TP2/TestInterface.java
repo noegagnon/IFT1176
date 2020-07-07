@@ -29,6 +29,6 @@ public interface TestInterface {
 
 	public Collection<Jeu> chercheCote(String cote);
 
-	public void saveBdd(String nomFichier);
+	public boolean saveBdd(String nomFichier);
 
 }

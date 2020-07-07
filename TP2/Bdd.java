@@ -51,7 +51,6 @@ public class Bdd implements TestInterface{
 			while(it.hasNext()) {
 				Jeu courant = it.next();			
 				if (aTrouver.equals(courant)) {
-					System.out.println(courant);
 					return courant;
 				}
 			}
@@ -102,8 +101,6 @@ public class Bdd implements TestInterface{
 	public boolean loadBdd(String nomFile){
 		jeuxVideo = new LinkedHashMap<>();
 		ensemble = new TreeSet<Jeu>();
-		//addBdd(nomFile);	
-		System.out.println(jeuxVideo);
 		return addBdd(nomFile);
 	}
 
@@ -111,20 +108,14 @@ public class Bdd implements TestInterface{
 	public ArrayList<Jeu> chercheConsole(String console){
 		ArrayList<Jeu> gameWithConsole = new ArrayList<Jeu>();
 		for(Map.Entry<String, TreeSet<Jeu>> entry : jeuxVideo.entrySet()) {
-			//System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
 			Iterator<Jeu> it = entry.getValue().iterator();
 			while(it.hasNext()) {
 				Jeu jeuCourant = it.next();
-				//System.out.println(jeuCourant);
-				// System.out.println(jeuCourant.trouveConsole(console));
-				// SSystem.out.println(jeuCourant.getConsoles());
 				if(jeuCourant.trouveConsole(console)) {
-					System.out.println(jeuCourant);
 					gameWithConsole.add(jeuCourant);
 				}
 			}				
 		}
-		System.out.println(gameWithConsole);
 		return gameWithConsole;
 
 	}
@@ -134,7 +125,6 @@ public class Bdd implements TestInterface{
 		Collection<Jeu> jeuxFab = new ArrayList<Jeu>();
 
 		for(Map.Entry<String, TreeSet<Jeu>> entry : jeuxVideo.entrySet()) {
-			//System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
 			Iterator<Jeu> it = entry.getValue().iterator();
 			while(it.hasNext()) {
 				Jeu jeuCourant = it.next();
@@ -143,7 +133,6 @@ public class Bdd implements TestInterface{
 				}
 			}				
 		}
-		System.out.println(jeuxFab);
 		return jeuxFab;
 	}
 
@@ -153,16 +142,12 @@ public class Bdd implements TestInterface{
 		Collection<Jeu> jeuxCote = new ArrayList<Jeu>();
 
 		for(Map.Entry<String, TreeSet<Jeu>> entry : jeuxVideo.entrySet()) {
-			//System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
 			Iterator<Jeu> it = entry.getValue().iterator();
 			while(it.hasNext()) {
 				Jeu jeuCourant = it.next();
-				//System.out.println("jeucourant " + jeuCourant);
 				String[] toutesCotes = jeuCourant.getCote().split("");
 				for(int i=0; i<toutesCotes.length; i++) {
-					//System.out.println(toutesCotes[i]);
 					if(toutesCotes[i].equalsIgnoreCase(cote)) {
-						System.out.println(jeuCourant);
 						jeuxCote.add(jeuCourant);
 					}
 				}
@@ -184,11 +169,9 @@ public class Bdd implements TestInterface{
 				System.out.println("\nDebut de la creation du fichier " + nomFichier + "\n");
 				PrintWriter aCreer = new PrintWriter(fw);
 				for(Map.Entry<String, TreeSet<Jeu>> entry : jeuxVideo.entrySet()) {
-					//System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
 					Iterator<Jeu> it = entry.getValue().iterator();
 					while(it.hasNext()) {
 						Jeu jeuCourant = it.next();
-						//System.out.println("jeucourant " + jeuCourant);
 						aCreer.println(jeuCourant);
 					}					
 				}	
