@@ -39,7 +39,8 @@ import java.sql.SQLException;
 		Jeu unJeu;
 
 		public TP3(int l, int h) throws ClassNotFoundException, SQLException{
-			Bdd.init();
+			laBase.init();
+			laBase.loadTable("jeux.txt");
 			frame1 = new JFrame();
 
 			// Menu
@@ -246,13 +247,13 @@ import java.sql.SQLException;
 			String action = e.getActionCommand();
 			if(action == "Sauvegarder la bdd") {
 		    	try {
-					Bdd.saveBdd(strToSave);
+					laBase.saveBdd(strToSave);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 		    	try {
-					if(Bdd.saveBdd(strToSave)) {
+					if(laBase.saveBdd(strToSave)) {
 						JOptionPane.showMessageDialog(frame1,
 							    "La banque de donnees a ete sauvegardee sur le fichier " + strToSave,
 							    "Sauvegarde d'une bdd",
