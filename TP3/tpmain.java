@@ -21,10 +21,10 @@ import java.sql.SQLException;
 
 		// Panel
 		private JPanel currentPanel,loadBddPanel = new loadPanel(), addBddPanel = new addPanel(),
-					   saveBddPanel = new savePanel(), addJeuPanel = new addJeuPanel(),
+					   saveBddPanel = new savePanel() /*addJeuPanel = new addJeuPanel(),
 					   getJeuPanel = new getJeuPanel(), chercheConsolePanel = new consolePanel(),
 					   getJeuFabPanel = new fabricantPanel(), chercheCotePanel = new cotePanel(),
-					   appliInfoPanel = new appliPanel();
+					   appliInfoPanel = new appliPanel()*/;
 
 		// Messages pour chaque panel
 		private TextField tf, bddAAdd, bddALoad, titreAAjouter, fabricantAAjouter, coteAAjouter,
@@ -39,7 +39,7 @@ import java.sql.SQLException;
 		Jeu unJeu;
 
 		public TP3(int l, int h) throws ClassNotFoundException, SQLException{
-			laBase.init();
+			Bdd.init();
 			frame1 = new JFrame();
 
 			// Menu
@@ -120,6 +120,8 @@ import java.sql.SQLException;
 			// Afficher le panel en fonction de l'item du menu selectionne
 			loadBdd.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
+					System.out.println("gfsd");
+
 	                swapPanel(loadBddPanel);
 					
 				}
@@ -136,10 +138,9 @@ import java.sql.SQLException;
 			addBdd.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					swapPanel(addBddPanel);
-
 				}
 			});
-
+/*
 			addJeu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					swapPanel(addJeuPanel);
@@ -178,9 +179,9 @@ import java.sql.SQLException;
 				}
 			});
 		}
-		
+		*/
 		// Chargement d'un fichier dans la banque de donnees
-	    public class loadPanel extends JPanel implements ActionListener {{
+	    class loadPanel extends JPanel implements ActionListener {{
 			this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
 			JButton buttonLoad = new JButton("Choisir le fichier a charger");
 			buttonLoad.addActionListener(this);
@@ -188,7 +189,7 @@ import java.sql.SQLException;
 	    }
 
 		@Override
-		public void actionPerformed(ActionEvent e) {		
+		public void actionPerformed(ActionEvent e) {
 			String action = e.getActionCommand();
 			if(action == "Choisir le fichier a charger") {
 				   FileDialog boiteFichier = new FileDialog(frame1);
@@ -217,6 +218,7 @@ import java.sql.SQLException;
 					e1.printStackTrace();
 				}
 			}
+		}
 		}}
 	    
 	    // Sauvegarde de la banque de donnees dans un fichier
@@ -244,13 +246,13 @@ import java.sql.SQLException;
 			String action = e.getActionCommand();
 			if(action == "Sauvegarder la bdd") {
 		    	try {
-					laBase.saveBdd(strToSave);
+					Bdd.saveBdd(strToSave);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 		    	try {
-					if(laBase.saveBdd(strToSave)) {
+					if(Bdd.saveBdd(strToSave)) {
 						JOptionPane.showMessageDialog(frame1,
 							    "La banque de donnees a ete sauvegardee sur le fichier " + strToSave,
 							    "Sauvegarde d'une bdd",
@@ -286,7 +288,11 @@ import java.sql.SQLException;
 			    boiteFichier.setVisible(true);
 			    nomFichier = boiteFichier.getFile();
 		    	try {
+		    		System.out.println("waa");
+		    		System.out.println(nomFichier);
 					laBase.addBdd(nomFichier);
+		    		System.out.println("waaaaa");
+
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -309,7 +315,7 @@ import java.sql.SQLException;
 				}
 			}
 		}}
-
+/*
 	    // Ajout d'un jeu a la banque de donnees
 	    public class addJeuPanel extends JPanel implements ActionListener {{
 			this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
@@ -601,7 +607,7 @@ import java.sql.SQLException;
 	        this.add(new JLabel("(c) Copyright BddGESTION Tous droits réservés.", JLabel.CENTER));
 	        this.setBorder(BorderFactory.createEmptyBorder(150, 150, 150, 150));
 	    }}
-	    
+	    */
 	    // Changer de panel
 	    protected void swapPanel(JPanel newPanel) {
 	        SwingUtilities.invokeLater(new Runnable() {   	
