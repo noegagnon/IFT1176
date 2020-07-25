@@ -1,20 +1,36 @@
+/*
+NOM: Gagnon
+PRENOM: Noemie
+*/
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
+import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-public class TP3 {
-	//static TestInterface laBase = new Bdd();
-	//Jeu unJeu;	
+public class Bdd {
+	private static Connection conn;
 
+	//init method pour connexion au lieu de main 
+	
+	public static void init() throws SQLException, ClassNotFoundException {
+       	String url="jdbc:mysql://mysql.iro.umontreal.ca/gagnonno_tp3";
+		String username = UserData.login;
+		String password = UserData.passwd;
+		String driver = "com.mysql.jdbc.Driver";
+
+		//Créer un objet du Driver
+		Class.forName(driver);
+
+    	conn = DriverManager.getConnection(url, username , password);
+
+	}
+	
+	/*
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		
        	String url="jdbc:mysql://mysql.iro.umontreal.ca/gagnonno_tp3";
@@ -24,30 +40,25 @@ public class TP3 {
 
 		//Créer un objet du Driver
 		Class.forName(driver);
-		System.out.println("je0");
-    	Connection conn = DriverManager.getConnection(url, username , password);
-		System.out.println("fd");
 
-/*
+    	Connection conn = DriverManager.getConnection(url, username , password);
+
+    	/*
     	if(loadTable(conn)){
     		requeteSelection(conn);
     	}
-*/
-    	loadTable(conn, "jeux.txt");
-    	addJeu(conn, "EA", "FIFA 2020", "E", "PS4,PC,Switch,Xbox");
-    	chercheConsole(conn, "PC");
-    	getJeuxFabricant(conn, "EA");
-    	chercheCote(conn, "P");
-    	saveBdd(conn, "save.txt");
-    	//addBdd(conn, "jeux.txt");
+
+		// a faire quand on ferme window
 		conn.close();
+		
 	}
-	
+*/
+
 	// Ajouter un jeu a la base de donnees
-	public static ResultSet addJeu(Connection conn, String fabricant, String nom, String cote, String consoles) throws SQLException {
+	public static void addJeu(String fabricant, String nom, String cote, String consoles) throws SQLException {
 		Statement stat = conn.createStatement();
 		String getString = "SELECT * FROM Jeu WHERE fabricant = "+ "'"+fabricant+"'" + " AND nom = "+ "'"+nom+"'"; //+ " AND nom = "+nom;
-		System.out.println("getString" + getString);
+		//System.out.println("getString" + getString);
 
         ResultSet rset = stat.executeQuery(getString);
         if(!rset.next()) {
@@ -88,11 +99,32 @@ public class TP3 {
         	System.out.println(ajout);
         	stat.executeUpdate(ajout);
         }
-		return rset;
+	}
+	
+	
+	// Retourne le jeu passe en parametre
+	public static String getJeu(String nom, String fabricant) throws SQLException {
+		Statement stat = conn.createStatement();
+		String getConsoles = "SELECT * FROM Jeu WHERE nom = '" + nom + "' AND fabricant = '" + fabricant+"'";
+    	ResultSet cons = stat.executeQuery(getConsoles);
+
+    	ResultSetMetaData rsmd= cons.getMetaData();
+    	int nbCol = rsmd.getColumnCount();
+		String jeuATrouver = "";
+		System.out.println("GET JEU");
+		while( cons.next() ) {
+	    	for(int i=1; i<nbCol;i++)
+	    	{
+	    		jeuATrouver += cons.getString(i) + ";";	    		
+	    	}
+	    	jeuATrouver += cons.getString(nbCol) + "\n";
+		}
+		System.out.println(jeuATrouver);
+		return jeuATrouver;
 	}
 
 	// Ajoute des jeux provenant d'un fichier a la base de donnees
-	static boolean addBdd (Connection conn, String nomFichier) throws SQLException {
+	static boolean addBdd (String nomFichier) throws SQLException {
     	boolean ln = true;
 		Statement stat = conn.createStatement();
 		
@@ -113,8 +145,7 @@ public class TP3 {
 							String cote = infoJeux[2]; 
 							String consoles = infoJeux[3]; 
 							String[] uneConsole = consoles.split(",");
-							addJeu(conn, fabricant, nom, cote, consoles);
-				         	//stat.execute("INSERT INTO Jeu VALUES ('"+fabricant+"','"+nom+"','"+cote+"','"+consoles+"')");
+							addJeu(fabricant, nom, cote, consoles);
 
 						}
 						else finFichier = true;
@@ -142,16 +173,16 @@ public class TP3 {
 	}
 		
 	// Charge la base de donnees
-	static boolean loadTable(Connection conn, String nomFichier) throws SQLException {
+	public static boolean loadTable(String nomFichier) throws SQLException {
     	String sql;
 		Statement stat = conn.createStatement();
 		sql = "DELETE FROM Jeu";
 		stat.execute(sql);
-		return(addBdd(conn, nomFichier));
+		return(addBdd(nomFichier));
 	}
 	
 	// Retourne le(s) jeu(x) pouvant se jouer sur la console passee en parametre
-	static String chercheConsole(Connection conn, String consoles) throws SQLException {
+	static String chercheConsole(String consoles) throws SQLException {
 		Statement stat = conn.createStatement();
 		String getConsoles = "SELECT * FROM Jeu WHERE consoles LIKE '%"+consoles+"%'";
     	ResultSet cons = stat.executeQuery(getConsoles);
@@ -170,7 +201,7 @@ public class TP3 {
 	}
 	
 	// Retourne le(s) jeu(x) realise(s) par le fabricant passe en parametre
-	static String getJeuxFabricant(Connection conn, String fabricant) throws SQLException {
+	static String getJeuxFabricant(String fabricant) throws SQLException {
 		Statement stat = conn.createStatement();
 		String getConsoles = "SELECT * FROM Jeu WHERE fabricant = '"+fabricant+"'";
     	ResultSet cons = stat.executeQuery(getConsoles);
@@ -191,7 +222,7 @@ public class TP3 {
 	}
 	
 	// Retourne le(s) jeu(x) portant la cote passee en parametre
-	static String chercheCote(Connection conn, String cote) throws SQLException {
+	public static String chercheCote(String cote) throws SQLException {
 		Statement stat = conn.createStatement();
 		String getConsoles = "SELECT * FROM Jeu WHERE cote LIKE '%"+cote+"%'";
     	ResultSet cons = stat.executeQuery(getConsoles);
@@ -210,7 +241,7 @@ public class TP3 {
 	}
 	
 	// Enregistre la base de donnees dans un fichier dont le nom est passe en parametre
-	public static boolean saveBdd(Connection conn, String nomFichier) throws SQLException{	
+	public static boolean saveBdd(String nomFichier) throws SQLException{	
 		Statement stat = conn.createStatement();
 
 		boolean probleme = false;
@@ -248,6 +279,7 @@ public class TP3 {
 		System.out.println("Fin de la creation du fichier " + nomFichier + "\n\n");
 		return sauvegarde;
 	}
+
 
 
 }
