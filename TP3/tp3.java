@@ -14,7 +14,7 @@ import java.sql.Statement;
 
 public class Bdd {
 	private static Connection conn;
-
+	static Jeu unJeu;
 	//init method pour connexion au lieu de main 
 	
 	public static void init() throws SQLException, ClassNotFoundException {
@@ -53,51 +53,100 @@ public class Bdd {
 		
 	}
 */
-
+	public static void addConsoles(String console) {
+		
+	}
 	// Ajouter un jeu a la base de donnees
-	public static void addJeu(String fabricant, String nom, String cote, String consoles) throws SQLException {
+	public static void addJeu(Jeu unJeu) throws SQLException {
 		Statement stat = conn.createStatement();
-		String getString = "SELECT * FROM Jeu WHERE fabricant = "+ "'"+fabricant+"'" + " AND nom = "+ "'"+nom+"'"; //+ " AND nom = "+nom;
-		//System.out.println("getString" + getString);
+		String getString = "SELECT * FROM Jeu WHERE fabricant = "+ "'"+unJeu.getFabricant()+"'" + " AND nom = "+ "'"+unJeu.getTitre()+"'"; //+ " AND nom = "+nom;
+		System.out.println("getString" + getString);
+		
+        ResultSet rset = stat.executeQuery(getString);	
+        /*
+		String strConsoles = "";
+		for(int i=0; i<console.length() ; i++) {
+			strConsolesUpd += "," + consBdArr[i];
+		}
+		*/
+		//System.out.println("laaaaaaa" + strConsolesUpd);
 
-        ResultSet rset = stat.executeQuery(getString);
+    	//System.out.println(consolesPresentes);
+		
+		// TODO a decommenter quand strConsole est fait
+        
+        System.out.println(unJeu.getFabricant());
+        System.out.println("consoles" + unJeu.getConsoles());
+
+     	
+
+        // si de jeu n'est pas dans la banque de donnees
+        System.out.println("!rset.next()" + !rset.next());
         if(!rset.next()) {
-         	stat.execute("INSERT INTO Jeu VALUES ('"+fabricant+"','"+nom+"','"+cote+"','"+consoles+"')");
-        } else {
-        	String consolesPresentes = "SELECT consoles FROM Jeu WHERE fabricant = "+ "'"+fabricant+"'" + " AND nom = "+ "'"+nom+"'";
-        	ResultSet cons = stat.executeQuery(consolesPresentes);
-            ArrayList<String> consBd = new ArrayList<String>();
-			String[] uneConsole = consoles.split(",");
+        	// s'il n'y a pas de consoles a ajouter
+        	System.out.println("unJeu.getConsoles().isEmpty()" + unJeu.getConsoles().isEmpty());
+        	System.out.println("fab" + unJeu.getFabricant());
+        	System.out.println("titre" + unJeu.getTitre());
+        	System.out.println("cote" + unJeu.getCote());
+        	if(unJeu.getConsoles().isEmpty()) {
+             	stat.execute("INSERT INTO Jeu VALUES ('"+unJeu.getFabricant()+"','"+unJeu.getTitre()+"','"+unJeu.getCote()+"')");
+        		
+             	
+        	} else {  
+                String consoleStr = "";
+                
+        		//get an Iterator
+        		Iterator<String> iterator = unJeu.getConsoles().iterator();
+        		 
+        		//iterating using the iterator and a while loop
+        		while( iterator.hasNext() ){
+        			
+        		    consoleStr += iterator.next();
+        		    if(iterator.hasNext()) consoleStr+=",";
+        		    System.out.println("Apres consoleStr");
+        		}
+        		System.out.println("APRES WHILE" + consoleStr);
+             	String inserer = "INSERT INTO Jeu VALUES ('"+unJeu.getFabricant()+"','"+unJeu.getTitre()+"','"+unJeu.getCote()+"','"+consoleStr+"')";
+                System.out.println("inserer" + inserer);
+             	stat.execute(inserer);
+        		
+        	}
+        }
+        	
+        //stat.execute("INSERT INTO Jeu VALUES ('"+unJeu.getFabricant()+"','"+unJeu.getTitre()+"','"+unJeu.getCote()+"','"+unJeu.getConsoles()+"')");
+    	else {
+    		// donne toutes les consoles du jeu qu'on ajoute qui est deja dans la bd dans "cons"
+	    	String consolesPresentes = "SELECT consoles FROM Jeu WHERE fabricant = "+ "'"+unJeu.getFabricant()+"'" + " AND nom = "+ "'"+unJeu.getTitre()+"'";
+	    	ResultSet cons = stat.executeQuery(consolesPresentes);
+	    	// console du jeu que j'ajoute
+			LinkedHashSet<String> console = unJeu.getConsoles();
+	        
+			if(cons.next()) {
+				//"SWITCH,PS4,WIIU,XONE"
+				String[] dbConsStr = cons.getString(1).split(",");
+				for(int i=0; i<dbConsStr.length; i++) {
+					console.add(dbConsStr[i]);
+				}
+			}
 			
-    		while( cons.next() ) {
-    			consBd.add(cons.getString(1));
-    		    System.out.println("iciiii" + cons.getString(1));
+			System.out.println("console" + console);
+			//  TODO loop through console, separer par ,
+			
+			String strConsoleComplet = "";
+    		Iterator<String> iterator = console.iterator();
+   		 
+    		//iterating using the iterator and a while loop
+    		while( iterator.hasNext() ){
+    			strConsoleComplet += iterator.next();
+    		    if(iterator.hasNext()) strConsoleComplet+=",";
     		}
-
-    		// donne array avec 1er indice les consoles deja presente et les consoles a ajouter ensuite
-    		for(int i=0; i<uneConsole.length; i++) {
-    			if(consBd.get(0).indexOf(uneConsole[i]) == -1) {
-    				consBd.add(uneConsole[i]);
-    			}
-    		}
-    		
-    		// convertir arrayList en array
-    		String[] consBdArr = new String[consBd.size()];    		
-    		for(int i=0; i<consBd.size(); i++) {
-    			consBdArr[i] = consBd.get(i);
-    		}
-    		
-    		// convertir array en String
-    		String strConsolesUpd = consBdArr[0];
-    		for(int i=1; i<consBd.size() ; i++) {
-    			strConsolesUpd += "," + consBdArr[i];
-    		}
-    		//System.out.println("laaaaaaa" + strConsolesUpd);
-
-        	//System.out.println(consolesPresentes);
-        	String ajout = "UPDATE Jeu SET consoles = " + "'"+strConsolesUpd+"' WHERE fabricant = "+ "'"+fabricant+"'" + " AND nom = "+ "'"+nom+"'";
-        	System.out.println(ajout);
-        	stat.executeUpdate(ajout);
+			
+		
+			System.out.println("strConsoleComplet" + strConsoleComplet);
+	    	String ajout = "UPDATE Jeu SET consoles = " + "'"+strConsoleComplet+"' WHERE fabricant = "+ "'"+unJeu.getFabricant()+"'" + " AND nom = "+ "'"+unJeu.getTitre()+"'";
+	    	System.out.println(ajout);
+	    	stat.executeUpdate(ajout);
+	    	
         }
 	}
 	
@@ -123,8 +172,10 @@ public class Bdd {
 		return jeuATrouver;
 	}
 
+	// addConsole(unJeu, string console)
 	// Ajoute des jeux provenant d'un fichier a la base de donnees
 	static boolean addBdd (String nomFichier) throws SQLException {
+		System.out.println("addBdd start");
     	boolean ln = true;
 		Statement stat = conn.createStatement();
 		
@@ -138,14 +189,20 @@ public class Bdd {
 					BufferedReader entree = new BufferedReader (fr);
 					while (!finFichier) {
 						String ligneLue = entree.readLine(); // null si fin de fichier
+						System.out.println(ligneLue);
 						if (ligneLue != null){
 							String[] infoJeux = ligneLue.split(";");					
 							String fabricant = infoJeux[0];
 							String nom = infoJeux[1];
 							String cote = infoJeux[2]; 
 							String consoles = infoJeux[3]; 
-							String[] uneConsole = consoles.split(",");
-							addJeu(fabricant, nom, cote, consoles);
+							String[] consArr = consoles.split(",");
+							System.out.println("console" + consoles);
+							LinkedHashSet<String> console = new LinkedHashSet<String>(Arrays.asList(consArr));
+							unJeu = new Jeu(fabricant, nom, cote, console);
+							System.out.println(fabricant);
+							System.out.println(unJeu);
+							addJeu(unJeu);
 
 						}
 						else finFichier = true;
