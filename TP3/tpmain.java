@@ -21,13 +21,13 @@ import java.sql.SQLException;
 
 		// Panel
 		private JPanel currentPanel,loadBddPanel = new loadPanel(), addBddPanel = new addPanel(),
-					   saveBddPanel = new savePanel(), /* addJeuPanel = new addJeuPanel(), */
+					   saveBddPanel = new savePanel(), addJeuPanel = new addJeuPanel(), 
 					   getJeuPanel = new getJeuPanel(), chercheConsolePanel = new consolePanel() ,
 					   getJeuFabPanel = new fabricantPanel(), chercheCotePanel = new cotePanel(),
 					   appliInfoPanel = new appliPanel();
 
 		// Messages pour chaque panel
-		private TextField tf, bddAAdd, bddALoad, titreAAjouter, fabricantAAjouter, coteAAjouter,
+		private TextField tf, bddAAdd, bddALoad, titreAAjouter, fabricantAAjouter, coteAAjouter, consoleAAjouter,
 					 	  fabricant, titre, console, fab, cote;
 
 		// Menu
@@ -121,8 +121,6 @@ import java.sql.SQLException;
 			// Afficher le panel en fonction de l'item du menu selectionne
 			loadBdd.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
-					System.out.println("gfsd");
-
 	                swapPanel(loadBddPanel);
 					
 				}
@@ -141,13 +139,13 @@ import java.sql.SQLException;
 					swapPanel(addBddPanel);
 				}
 			});
-/*
+			
 			addJeu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					swapPanel(addJeuPanel);
 				}
 			});
-		*/	
+		
 			
 			getJeu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
@@ -175,15 +173,16 @@ import java.sql.SQLException;
 				}
 			});
 		
-		}
-			/*
+		
+			
 			appliBdd.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 	                swapPanel(appliInfoPanel);
 				}
 			});
-		}
-		*/
+		
+		
+	}
 		// Chargement d'un fichier dans la banque de donnees
 	    class loadPanel extends JPanel implements ActionListener {{
 			this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
@@ -319,7 +318,7 @@ import java.sql.SQLException;
 				}
 			}
 		}}
-/*
+
 	    // Ajout d'un jeu a la banque de donnees
 	    public class addJeuPanel extends JPanel implements ActionListener {{
 			this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
@@ -335,11 +334,14 @@ import java.sql.SQLException;
 			JLabel ajouterTitre = new JLabel("Veuillez entrez le titre du jeu a ajouter");
 			JLabel ajouterFabricant = new JLabel("Veuillez entrez le fabricant du jeu a ajouter");
 			JLabel ajouterCote = new JLabel("Veuillez entrez la cote du jeu a ajouter");
-			JLabel ajouterConsole = new JLabel("Veuillez cliquez sur le bouton suivant afin d'ajouter une/des console(s) a ce jeu");
+			JLabel ajouterConsole = new JLabel("Veuillez entrez une console du jeu a ajouter");
+
+			JLabel ajouterAutreConsole = new JLabel("Veuillez cliquez sur le bouton suivant afin d'ajouter une/des console(s) a ce jeu");
 
 			titreAAjouter = new TextField(50);
 			fabricantAAjouter = new TextField(50);
 			coteAAjouter = new TextField(50);
+			consoleAAjouter = new TextField(50);
 			
 			this.add(ajouterTitre);
 			this.add(titreAAjouter);
@@ -347,9 +349,10 @@ import java.sql.SQLException;
 			this.add(fabricantAAjouter);
 			this.add(ajouterCote);
 			this.add(coteAAjouter);
+			this.add(consoleAAjouter);
 			this.add(buttonAddJeu);
 			this.add(buttonEffacer);
-			this.add(ajouterConsole);
+			this.add(ajouterAutreConsole);
 			this.add(buttonConsole);
 	    }
 
@@ -358,6 +361,7 @@ import java.sql.SQLException;
 			String strTitreAAjouter = titreAAjouter.getText().toUpperCase();
 			String strFabAAjouter = fabricantAAjouter.getText().toUpperCase();
 			String strCoteAAjouter = coteAAjouter.getText().toUpperCase();	
+			String strConsAAjouter = consoleAAjouter.getText().toUpperCase();
 			String action = e.getActionCommand();	
 			if(action == "Ajouter jeu") {
 				if(strTitreAAjouter.length() == 0 || strFabAAjouter.length() == 0 || strCoteAAjouter.length() == 0) {
@@ -366,20 +370,29 @@ import java.sql.SQLException;
 			    		    "Veuillez remplir tous les champs",
 			    		    "Informations manquantes",
 			    		    JOptionPane.WARNING_MESSAGE);
-					
 				} else {
-					unJeu = new Jeu(strFabAAjouter, strTitreAAjouter, strCoteAAjouter);
-			    	laBase.addJeu(unJeu);
-			    	JOptionPane.showMessageDialog(frame1,
-			    		    "Le jeu " + strTitreAAjouter + " du fabricant " + strFabAAjouter + " ayant une cote " + strCoteAAjouter 
-			    		    + " a bien ete ajoute a la banque de donnees",
-			    		    "Ajout d'un jeu",
-			    		    JOptionPane.PLAIN_MESSAGE);				
+					LinkedHashSet uneCons = new LinkedHashSet<String>();
+					uneCons.add(strConsAAjouter);
+					unJeu = new Jeu(strFabAAjouter, strTitreAAjouter, strCoteAAjouter, uneCons);
+			    	try {
+						laBase.addJeu(unJeu);
+				    	JOptionPane.showMessageDialog(frame1,
+				    		    "Le jeu " + strTitreAAjouter + " du fabricant " + strFabAAjouter + " ayant une cote " + strCoteAAjouter 
+				    		    + " a bien ete ajoute a la banque de donnees",
+				    		    "Ajout d'un jeu",
+				    		    JOptionPane.PLAIN_MESSAGE);	
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+			
 				}
 			} else if(action == "Effacer") {
 				titreAAjouter.setText("");
 				fabricantAAjouter.setText("");
 				coteAAjouter.setText("");
+				consoleAAjouter.setText("");
+
 			}
 			int ajouterAutre;
 			if(action == "Ajouter une/des console(s)") {
@@ -392,13 +405,21 @@ import java.sql.SQLException;
 				} else {
 					do {
 				        String console = JOptionPane.showInputDialog(frame1, "Entrez une console", "Console", JOptionPane.PLAIN_MESSAGE).toUpperCase();
-				        unJeu.addConsole(console);				
+						LinkedHashSet<String> consoleLHS = new LinkedHashSet<String>();
+						consoleLHS.add(console);
+				        unJeu = new Jeu(strFabAAjouter, strTitreAAjouter, strCoteAAjouter, consoleLHS);
+				        try {
+							laBase.addJeu(unJeu);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}				
 				        ajouterAutre = JOptionPane.showConfirmDialog(frame1, "Voulez-vous ajouter une autre console?", "Ajout de console", JOptionPane.YES_NO_OPTION);
 					} while (ajouterAutre == JOptionPane.YES_OPTION);				
 				}
 			}
 		}}
-	    */
+	    
 	    // Affichage d'un jeu de la banque de donnees
 	    public class getJeuPanel extends JPanel implements ActionListener {{
 			this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));

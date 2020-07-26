@@ -53,6 +53,7 @@ public class Bdd {
 		
 	}
 */
+	
 	public static void addConsoles(String console) {
 		
 	}
@@ -81,18 +82,21 @@ public class Bdd {
      	
 
         // si de jeu n'est pas dans la banque de donnees
-        System.out.println("!rset.next()" + !rset.next());
         if(!rset.next()) {
         	// s'il n'y a pas de consoles a ajouter
         	System.out.println("unJeu.getConsoles().isEmpty()" + unJeu.getConsoles().isEmpty());
         	System.out.println("fab" + unJeu.getFabricant());
         	System.out.println("titre" + unJeu.getTitre());
         	System.out.println("cote" + unJeu.getCote());
+        	/*
         	if(unJeu.getConsoles().isEmpty()) {
-             	stat.execute("INSERT INTO Jeu VALUES ('"+unJeu.getFabricant()+"','"+unJeu.getTitre()+"','"+unJeu.getCote()+"')");
+             	//String inserer = "INSERT INTO Jeu VALUES ('"+unJeu.getFabricant()+"','"+unJeu.getTitre()+"','"+unJeu.getCote()+"','"+consoleStr+"')";
+        		String insererSansCons = "INSERT INTO Jeu(fabricant, nom, cote, consoles) VALUES ('"+unJeu.getFabricant()+"','"+unJeu.getTitre()+"','"+unJeu.getCote()+"')";
+             	System.out.println("insererSansCons " + insererSansCons);
+        		stat.execute(insererSansCons);
         		
              	
-        	} else {  
+        	} */
                 String consoleStr = "";
                 
         		//get an Iterator
@@ -110,7 +114,7 @@ public class Bdd {
                 System.out.println("inserer" + inserer);
              	stat.execute(inserer);
         		
-        	}
+        	
         }
         	
         //stat.execute("INSERT INTO Jeu VALUES ('"+unJeu.getFabricant()+"','"+unJeu.getTitre()+"','"+unJeu.getCote()+"','"+unJeu.getConsoles()+"')");
