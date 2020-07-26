@@ -11,8 +11,7 @@
 	import javax.swing.*;
 	import java.util.*;
 	import java.io.*;
-import java.sql.SQLException;
-
+	import java.sql.SQLException;
 
 	public class TP3 extends JFrame implements ActionListener  {
 
@@ -111,7 +110,6 @@ import java.sql.SQLException;
 			// Gestion du frame
 			frame1.setJMenuBar(mb);
 			frame1.add(currentPanel, BorderLayout.CENTER);
-			frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame1.setTitle("BddGESTION");
 			frame1.setSize(l, h);
 			frame1.setLocationRelativeTo(null);
@@ -126,14 +124,12 @@ import java.sql.SQLException;
 				}
 			});
 			
-			frame1.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 			saveBdd.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					swapPanel(saveBddPanel);
 				}
 			});
 
-			frame1.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 			addBdd.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					swapPanel(addBddPanel);
@@ -173,16 +169,13 @@ import java.sql.SQLException;
 				}
 			});
 		
-		
-			
 			appliBdd.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 	                swapPanel(appliInfoPanel);
 				}
-			});
+			});		
+		}	
 		
-		
-	}
 		// Chargement d'un fichier dans la banque de donnees
 	    class loadPanel extends JPanel implements ActionListener {{
 			this.setBorder(BorderFactory.createEmptyBorder(150,60,60,60));
@@ -291,11 +284,7 @@ import java.sql.SQLException;
 			    boiteFichier.setVisible(true);
 			    nomFichier = boiteFichier.getFile();
 		    	try {
-		    		System.out.println("waa");
-		    		System.out.println(nomFichier);
 					laBase.addBdd(nomFichier);
-		    		System.out.println("waaaaa");
-
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -349,6 +338,7 @@ import java.sql.SQLException;
 			this.add(fabricantAAjouter);
 			this.add(ajouterCote);
 			this.add(coteAAjouter);
+			this.add(ajouterConsole);
 			this.add(consoleAAjouter);
 			this.add(buttonAddJeu);
 			this.add(buttonEffacer);
@@ -364,7 +354,8 @@ import java.sql.SQLException;
 			String strConsAAjouter = consoleAAjouter.getText().toUpperCase();
 			String action = e.getActionCommand();	
 			if(action == "Ajouter jeu") {
-				if(strTitreAAjouter.length() == 0 || strFabAAjouter.length() == 0 || strCoteAAjouter.length() == 0) {
+				if(strTitreAAjouter.length() == 0 || strFabAAjouter.length() == 0 || strCoteAAjouter.length() == 0
+						|| strConsAAjouter.length() == 0) {
 		    		UIManager.put("OptionPane.minimumSize",new Dimension(600,100)); 
 			    	JOptionPane.showMessageDialog(frame1,
 			    		    "Veuillez remplir tous les champs",
@@ -378,14 +369,13 @@ import java.sql.SQLException;
 						laBase.addJeu(unJeu);
 				    	JOptionPane.showMessageDialog(frame1,
 				    		    "Le jeu " + strTitreAAjouter + " du fabricant " + strFabAAjouter + " ayant une cote " + strCoteAAjouter 
-				    		    + " a bien ete ajoute a la banque de donnees",
+				    		    + " et la console " + strConsAAjouter + " a bien ete ajoute a la banque de donnees",
 				    		    "Ajout d'un jeu",
 				    		    JOptionPane.PLAIN_MESSAGE);	
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-			
 				}
 			} else if(action == "Effacer") {
 				titreAAjouter.setText("");
@@ -411,7 +401,6 @@ import java.sql.SQLException;
 				        try {
 							laBase.addJeu(unJeu);
 						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}				
 				        ajouterAutre = JOptionPane.showConfirmDialog(frame1, "Voulez-vous ajouter une autre console?", "Ajout de console", JOptionPane.YES_NO_OPTION);
@@ -472,7 +461,6 @@ import java.sql.SQLException;
 								    JOptionPane.WARNING_MESSAGE);
 						}
 					} catch (HeadlessException | SQLException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}				
 				}
@@ -506,36 +494,35 @@ import java.sql.SQLException;
 			String strConsole = console.getText().toUpperCase();
 			String action = e.getActionCommand();
 			if(action == "Chercher les jeux pour cette console") {
-		    	try {
-					laBase.chercheConsole(strConsole);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-		    	try {
-					if(laBase.chercheConsole(strConsole).length() != 0) {
-						JTextArea textArea = new JTextArea(10,50);
-						String ensemble = laBase.chercheConsole(strConsole);
-						/*
-						String jeuxAAfficher = "";
-						for(Jeu j : ensemble) {
-							jeuxAAfficher += j + "\n";
-						} 	
-						textArea.setText(jeuxAAfficher);
-						*/
-						textArea.setText(ensemble);
-					    JScrollPane scrollPane = new JScrollPane(textArea);
-					    JOptionPane.showMessageDialog(frame1, scrollPane, "Jeux pour la console " + strConsole, JOptionPane.PLAIN_MESSAGE);
-					} else {
-						UIManager.put("OptionPane.minimumSize",new Dimension(600,100)); 
-						JOptionPane.showMessageDialog(frame1,
-								"Aucun jeu pour la console " + strConsole + " n'a ete trouvé",
-							    "Jeu(x) sur une console",
-							    JOptionPane.WARNING_MESSAGE);
+				if(strConsole.length() == 0) {
+		    		UIManager.put("OptionPane.minimumSize",new Dimension(600,100)); 
+			    	JOptionPane.showMessageDialog(frame1,
+			    		    "Veuillez remplir tous les champs",
+			    		    "Informations manquantes",
+			    		    JOptionPane.WARNING_MESSAGE);
+				} else {			
+			    	try {
+						laBase.chercheConsole(strConsole);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
 					}
-				} catch (HeadlessException | SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+			    	try {
+						if(laBase.chercheConsole(strConsole).length() != 0) {
+							JTextArea textArea = new JTextArea(10,50);
+							String ensemble = laBase.chercheConsole(strConsole);
+							textArea.setText(ensemble);
+						    JScrollPane scrollPane = new JScrollPane(textArea);
+						    JOptionPane.showMessageDialog(frame1, scrollPane, "Jeux pour la console " + strConsole, JOptionPane.PLAIN_MESSAGE);
+						} else {
+							UIManager.put("OptionPane.minimumSize",new Dimension(600,100)); 
+							JOptionPane.showMessageDialog(frame1,
+									"Aucun jeu pour la console " + strConsole + " n'a ete trouvé",
+								    "Jeu(x) sur une console",
+								    JOptionPane.WARNING_MESSAGE);
+						}
+					} catch (HeadlessException | SQLException e1) {
+						e1.printStackTrace();
+					}
 				}
 			} else if(action == "Effacer") {
 				console.setText("");
@@ -566,36 +553,36 @@ import java.sql.SQLException;
 			String strFabricant = fab.getText().toUpperCase();
 			String action = e.getActionCommand();
 			if(action == "Chercher les jeux de ce fabricant") {
-		    	try {
-					laBase.getJeuxFabricant(strFabricant);
-				} catch (SQLException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
-		    	try {
-					if(laBase.getJeuxFabricant(strFabricant).length() != 0) {
-						JTextArea textArea = new JTextArea(10,50);
-						String ensemble = laBase.getJeuxFabricant(strFabricant);
-						/*
-						Collection<Jeu> ensemble = laBase.getJeuxFabricant(strFabricant);
-						String jeuxAAfficher = "";
-						for(Jeu j : ensemble) {
-							jeuxAAfficher += j + "\n";
-						} 
-						*/	
-						textArea.setText(ensemble);
-					    JScrollPane scrollPane = new JScrollPane(textArea);
-					    JOptionPane.showMessageDialog(frame1, scrollPane, "Jeux du fabricant " + strFabricant, JOptionPane.PLAIN_MESSAGE);
-					} else {
-						UIManager.put("OptionPane.minimumSize",new Dimension(600,100)); 
-						JOptionPane.showMessageDialog(frame1,
-								"Aucun jeu du fabricant " + strFabricant + " n'a ete trouvé",
-							    "Jeu(x) d'un fabricant",
-							    JOptionPane.WARNING_MESSAGE);
+				if(strFabricant.length() == 0) {
+		    		UIManager.put("OptionPane.minimumSize",new Dimension(600,100)); 
+			    	JOptionPane.showMessageDialog(frame1,
+			    		    "Veuillez remplir tous les champs",
+			    		    "Informations manquantes",
+			    		    JOptionPane.WARNING_MESSAGE);
+				} else {			
+			    	try {
+						laBase.getJeuxFabricant(strFabricant);
+					} catch (SQLException e2) {
+						e2.printStackTrace();
 					}
-				} catch (HeadlessException | SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+			    	try {
+						if(laBase.getJeuxFabricant(strFabricant).length() != 0) {
+							JTextArea textArea = new JTextArea(10,50);
+							String ensemble = laBase.getJeuxFabricant(strFabricant);
+							textArea.setText(ensemble);
+						    JScrollPane scrollPane = new JScrollPane(textArea);
+						    JOptionPane.showMessageDialog(frame1, scrollPane, "Jeux du fabricant " + strFabricant, JOptionPane.PLAIN_MESSAGE);
+						} else {
+							UIManager.put("OptionPane.minimumSize",new Dimension(600,100)); 
+							JOptionPane.showMessageDialog(frame1,
+									"Aucun jeu du fabricant " + strFabricant + " n'a ete trouvé",
+								    "Jeu(x) d'un fabricant",
+								    JOptionPane.WARNING_MESSAGE);
+						}
+					} catch (HeadlessException | SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			} else if(action == "Effacer") {
 				fab.setText("");
@@ -626,36 +613,37 @@ import java.sql.SQLException;
 			String strCote = cote.getText().toUpperCase();
 			String action = e.getActionCommand();
 			if(action == "Chercher les jeux avec cette cote") {
-		    	try {
-					laBase.chercheCote(strCote);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}	    	
-		    	try {
-					if(laBase.chercheCote(strCote).length() != 0) {
-						JTextArea textArea = new JTextArea(10,50);
-						//Collection<Jeu> ensemble = laBase.chercheCote(strCote);
-						String ensemble = laBase.chercheCote(strCote);
-						/*
-						String jeuxAAfficher = "";
-						for(Jeu j : ensemble) {
-							jeuxAAfficher += j + "\n";
-						} 
-						*/	
-						textArea.setText(ensemble);
-					    JScrollPane scrollPane = new JScrollPane(textArea);
-					    JOptionPane.showMessageDialog(frame1, scrollPane, "Jeux ayant la cote " + strCote, JOptionPane.PLAIN_MESSAGE);
-
-					} else {
-						JOptionPane.showMessageDialog(frame1,
-								"Aucun jeu ayant la cote " + strCote + " n'a ete trouvé",
-							    "Jeu(x) avec une certaine cote",
-							    JOptionPane.WARNING_MESSAGE);
+				if(strCote.length() == 0) {
+		    		UIManager.put("OptionPane.minimumSize",new Dimension(600,100)); 
+			    	JOptionPane.showMessageDialog(frame1,
+			    		    "Veuillez remplir tous les champs",
+			    		    "Informations manquantes",
+			    		    JOptionPane.WARNING_MESSAGE);
+				} else {
+					
+			    	try {
+						laBase.chercheCote(strCote);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}	    	
+			    	try {
+						if(laBase.chercheCote(strCote).length() != 0) {
+							JTextArea textArea = new JTextArea(10,50);
+							String ensemble = laBase.chercheCote(strCote);
+							textArea.setText(ensemble);
+						    JScrollPane scrollPane = new JScrollPane(textArea);
+						    JOptionPane.showMessageDialog(frame1, scrollPane, "Jeux ayant la cote " + strCote, JOptionPane.PLAIN_MESSAGE);
+	
+						} else {
+							JOptionPane.showMessageDialog(frame1,
+									"Aucun jeu ayant la cote " + strCote + " n'a ete trouvé",
+								    "Jeu(x) avec une certaine cote",
+								    JOptionPane.WARNING_MESSAGE);
+						}
+					} catch (HeadlessException | SQLException e1) {
+						e1.printStackTrace();
 					}
-				} catch (HeadlessException | SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
 			} else if (action == "Effacer") {
 				cote.setText("");
@@ -690,7 +678,6 @@ import java.sql.SQLException;
 			try {
 				new	TP3(650,800);
 			} catch (ClassNotFoundException | SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
