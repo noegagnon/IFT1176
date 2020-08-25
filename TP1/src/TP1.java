@@ -1,6 +1,8 @@
 /*
 NOM: Gagnon
 PRENOM: Noemie
+
+BUT DU PROGRAMME: Ce programme permet de gerer une banque de donnees composees de jeux videos
 */
 
 import java.util.*;
